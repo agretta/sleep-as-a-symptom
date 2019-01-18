@@ -1,14 +1,15 @@
 import React, { Component } from 'react';
 import {Link} from 'react-router-dom';
 
-export default class AccountManagement extends Component { 
+export default class AdminPortal extends Component { 
   state = { 
   }
   
   render () {                                   
       return (
         <div>
-            User Account Management
+            Admin Portal
+
             <br></br>
             <Link to="/dashboard">Dashboard</Link>
         </div>

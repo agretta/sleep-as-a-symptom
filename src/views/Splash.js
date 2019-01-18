@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import {Link} from 'react-router-dom';
 
 export default class Splash extends Component { 
   state = { 
@@ -7,7 +8,11 @@ export default class Splash extends Component {
   render () {                                   
       return (
          <div>
-            hello world
+              Splash
+              <br></br>
+              <Link to="/register">Register</Link>
+              <br></br>
+              <Link to="/login">Login</Link>
         </div>
       )
    }

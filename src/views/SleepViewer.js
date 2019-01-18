@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 import {Link} from 'react-router-dom';
 
-export default class AccountManagement extends Component { 
+export default class SleepViewer extends Component { 
   state = { 
   }
   
   render () {                                   
       return (
         <div>
-            User Account Management
+            SleepViewer
             <br></br>
             <Link to="/dashboard">Dashboard</Link>
         </div>
