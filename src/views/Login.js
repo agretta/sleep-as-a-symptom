@@ -1,6 +1,7 @@
 
 import React, { Component } from 'react';
 import {Link} from 'react-router-dom';
+import NavButton from './NavButton'
 
 export default class Login extends Component { 
   state = { 
@@ -19,9 +20,8 @@ export default class Login extends Component {
                 </form>
             </div>
             <div>
-              <Link to="/register">Register</Link>
-              <br></br>
-              <Link to="/dashboard">Dashboard</Link>
+              <NavButton to='/register'>Register</NavButton>
+              <NavButton to='/dashboard'>Dashboard</NavButton>
             </div>
         </div>
       )

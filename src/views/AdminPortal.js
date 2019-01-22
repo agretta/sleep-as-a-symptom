@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import {Link} from 'react-router-dom';
+import NavButton from './NavButton'
 
 export default class AdminPortal extends Component { 
   state = { 
@@ -11,7 +12,7 @@ export default class AdminPortal extends Component {
             Admin Portal
 
             <br></br>
-            <Link to="/dashboard">Dashboard</Link>
+            <NavButton to='/dashboard'>Dashboard</NavButton>
         </div>
       )
    }

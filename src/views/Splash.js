@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import {Link} from 'react-router-dom';
+import NavButton from './NavButton'
 
 export default class Splash extends Component { 
   state = { 
@@ -10,9 +11,9 @@ export default class Splash extends Component {
          <div>
               Splash
               <br></br>
-              <Link to="/register">Register</Link>
+              <NavButton to='/register'>Register</NavButton>
               <br></br>
-              <Link to="/login">Login</Link>
+              <NavButton to='/login'>Login</NavButton>
         </div>
       )
    }

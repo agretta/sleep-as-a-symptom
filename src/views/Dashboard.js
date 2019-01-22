@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import {Link} from 'react-router-dom';
+import NavButton from './NavButton'
 export default class Dashboard extends Component { 
   state = { 
   }
@@ -10,16 +11,17 @@ export default class Dashboard extends Component {
             <div>
                 Dashboard
             </div>
-              <Link to="/sleep-viewer">Sleep Viewer</Link>
+              <NavButton to='/sleep-viewer'>Sleep Viewer</NavButton>
               <br></br>
-              <Link to="/log-health-data">Log Data</Link>
+              <NavButton to='/log-health-data'>Log Data</NavButton>
               <br></br>
-              <Link to="/account-management">Account Management</Link>
+              <NavButton to='/account-management'>Account Management</NavButton>
               <br></br>
-              <Link to="/fitbit-settings">FitBit Management</Link>
+              <NavButton to='/fitbit-settings'>FitBit Management</NavButton>
               <br></br>
-              <Link to="/admin-dashboard">Admin Portal </Link>
+              <NavButton to='/admin-dashboard'>Admin Porta</NavButton>
               <br></br>
+              <NavButton to='/'>Logout</NavButton>
         </div>
       )
    }

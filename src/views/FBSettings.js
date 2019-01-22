@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import NavButton from './NavButton'
 import {Link} from 'react-router-dom';
 
 export default class FBSettings extends Component { 
@@ -10,7 +11,7 @@ export default class FBSettings extends Component {
         <div>
            FitBit Settings
            <br></br>
-           <Link to="/dashboard">Dashboard</Link>
+           <NavButton to='/dashboard'>Dashboard</NavButton>
         </div>
       )
    }
