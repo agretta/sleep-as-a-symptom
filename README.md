@@ -8,8 +8,7 @@ using create-react-app
 
 npm install -g create-react-app
 
-move to sleep-as-a-symptom dir
-and run
+move to sleep-as-a-symptom dir and run
 
 npm start
 
