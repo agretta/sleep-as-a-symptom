@@ -2,22 +2,45 @@ import React, { Component } from 'react';
 import {Link} from 'react-router-dom';
 import NavButton from './NavButton'
 
-export default class Register extends Component { 
-  state = { 
+var firebase = require("firebase");
+
+export default class Register extends Component {
+  state = {
   }
-  
-  render () {                                   
+
+  constructor(props) {
+    super(props);
+    this.registerUser = this.registerUser.bind(this);
+  }
+
+  registerUser(e) {
+    var email = document.getElementById("email").value;
+    var password = document.getElementById("password").value;
+
+    firebase.auth().createUserWithEmailAndPassword(email, password).catch(function(error) {
+      // Handle Errors here.
+      var errorCode = error.code;
+      var errorMessage = error.message;
+
+      alert(errorCode + '\n' + errorMessage);
+      // ...
+    });
+
+    e.preventDefault();
+  }
+
+  render () {
       return (
         <div>
              <div id='signinContainer'>
-              <form id='form' onSubmit={this.onSubmit.bind(this)}>
-                <input className='input' name='email' type="text"
-                  placeholder="Email"/>
-                <input className='input' name='pass' type="password"
-                  placeholder="Password"/>          
-                <input className='input' name='cPass' type="password"  
-                  placeholder="Confirm Password"/>          
-                <button id='submit' type="submit">Sign Up</button>
+              <form id='form' onSubmit={this.registerUser}>
+                <input className='input' type="text"
+                  placeholder="Email" id="email"/>
+                <input className='input' type="password"
+                  placeholder="Password" id="password"/>
+                <input className='input' type="password"
+                  placeholder="Confirm Password"/>
+                <button id='submit'>Sign Up</button>
               </form>
              </div>
              <br></br>
@@ -28,14 +51,4 @@ export default class Register extends Component {
         </div>
       )
    }
-
-  onSubmit(e){
-      var user = {
-          email: e.target.elements.email.value,
-          pass: e.target.elements.pass.value,
-          id: Math.floor(Math.random() * 10000000000)
-      }
-      console.log(user)
-  }
-
 }

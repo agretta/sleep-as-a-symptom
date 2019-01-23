@@ -14,6 +14,15 @@ import LogHealthData from './views/LogHealthData';
 import SleepViewer from './views/SleepViewer';
 import AdminPortal from './views/AdminPortal';
 
+var firebase = require("firebase");
+var config = {
+  apiKey: "AIzaSyCT-dBYCm_dbC9dQ9W_R5e8SFwQH6A0ABI",
+  authDomain: "sleep-as-a-symptom.firebaseapp.com",
+  databaseURL: "https://sleep-as-a-symptom.firebaseio.com",
+  storageBucket: "sleep-as-a-symptom.appspot.com",
+};
+firebase.initializeApp(config);
+
 class App extends Component {
   render() {
     return (
@@ -45,7 +54,7 @@ class App extends Component {
           </div>
               <br></br>
           <div>
-              <Route exact={true} path='/' component={Splash} /> 
+              <Route exact={true} path='/' component={Splash} />
               <Route exact={true} path='/splash' component={Splash} />
               <Route exact={true} path='/register' component={Register} />
               <Route exact={true} path='/login' component={Login} />
