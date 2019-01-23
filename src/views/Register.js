@@ -10,14 +10,14 @@ export default class Register extends Component {
       return (
         <div>
              <div id='signinContainer'>
-              <form id='form'>       
-                <input className='input' type="text"   
+              <form id='form' onSubmit={this.onSubmit.bind(this)}>
+                <input className='input' name='email' type="text"
                   placeholder="Email"/>
-                <input className='input' type="password"  
+                <input className='input' name='pass' type="password"
                   placeholder="Password"/>          
-                <input className='input' type="password"  
+                <input className='input' name='cPass' type="password"  
                   placeholder="Confirm Password"/>          
-                <button id='submit'>Sign Up</button>
+                <button id='submit' type="submit">Sign Up</button>
               </form>
              </div>
              <br></br>
@@ -28,4 +28,14 @@ export default class Register extends Component {
         </div>
       )
    }
+
+  onSubmit(e){
+      var user = {
+          email: e.target.elements.email.value,
+          pass: e.target.elements.pass.value,
+          id: Math.floor(Math.random() * 10000000000)
+      }
+      console.log(user)
+  }
+
 }
