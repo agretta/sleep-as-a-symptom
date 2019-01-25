@@ -34,7 +34,7 @@ class App extends Component {
     return (
       <div>
         {/* Tempoary link navigation*/}
-          <div>
+          {/*<div>
               TEMPORARY HARD LINKS
               <br></br>
               <Link to="/">Home</Link>
@@ -57,7 +57,7 @@ class App extends Component {
               <br></br>
               TEMPORARY HARD LINKS
               <br></br>
-          </div>
+          </div> **/}
               <br></br>
           <div>
               <Route exact={true} path='/' component={Splash} />
