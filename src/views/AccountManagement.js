@@ -92,31 +92,33 @@ export default class AccountManagement extends Component {
   render () {                                   
       return (
         <div>
-            User Account Management
-            <Col style={{display: 'flex', justifyContent: 'left', alignItems: 'center'}}>
-                  <Form id='form' onSubmit={this.updateUser}>
-                  <FormGroup>
-                      Update email:
-                    <Row style={{display: 'flex', justifyContent: 'center',}}>
-                      <FormControl className='input' name='email' type="text" id="email"
-                        placeholder="Email" value={this.state.email} onChange={this.handleChangeEmail}/>
-                    </Row>
-                      Update password: 
-                    <Row style={{display: 'flex', justifyContent: 'center',}}>
-                      <FormControl className='input' name='pass' type="password" id="password"
-                        placeholder="Password" value={this.state.pass} onChange={this.handleChangePass}/>
-                    </Row>
-                    <Row style={{display: 'flex', justifyContent: 'center',}}>
-                    <FormControl className='input' name='cPass' type="password"
-                      placeholder="Confirm Password" value={this.state.cPass} onChange={this.handleChangecPass}/>
-                    </Row>
-                    <Row style={{display: 'flex', justifyContent: 'left',}}>
-                    <Button variant='outline-primary' id='submit' type="submit">Update</Button>
-                    </Row>
-                  </FormGroup>
-                  </Form>
-            </Col>
-            <NavButton to='/dashboard'>Dashboard</NavButton>
+              <Col style={{display: 'flex', justifyContent: 'left', alignItems: 'center', margin: '5%'}}>
+                    <Form id='form' onSubmit={this.updateUser}>
+                    <FormGroup>
+                        Update email:
+                      <Row style={{display: 'flex', justifyContent: 'center', margin:'2%'}}>
+                        <FormControl className='input' name='email' type="text" id="email"
+                          placeholder="Email" value={this.state.email} onChange={this.handleChangeEmail}/>
+                      </Row>
+                        Update password: 
+                      <Row style={{display: 'flex', justifyContent: 'center', margin:'2%'}}>
+                        <FormControl className='input' name='pass' type="password" id="password"
+                          placeholder="Password" value={this.state.pass} onChange={this.handleChangePass}/>
+                      </Row>
+                      <Row style={{display: 'flex', justifyContent: 'center',margin:'2%'}}>
+                      <FormControl className='input' name='cPass' type="password"
+                        placeholder="Confirm Password" value={this.state.cPass} onChange={this.handleChangecPass}/>
+                      </Row>
+                      <Row style={{display: 'flex', justifyContent: 'left',margin:'2%'}}>
+                      <Button variant='outline-primary' id='submit' type="submit">Update</Button>
+                      </Row>
+                      <Row style={{height:'50px'}}></Row>
+                      <Row style={{display: 'flex', justifyContent: 'left', margin:'2%'}}>
+                      <NavButton to='/dashboard'>Dashboard</NavButton>
+                      </Row>
+                    </FormGroup>
+                    </Form>
+              </Col>
         </div>
       )
    }

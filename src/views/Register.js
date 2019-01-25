@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Link} from 'react-router-dom';
+import {Redirect, Link} from 'react-router-dom';
 import NavButton from '../components/NavButton'
 import { Container, Row, Col, Button, FormControl, FormGroup, Form } from 'react-bootstrap'
 
@@ -22,8 +22,10 @@ export default class Register extends Component {
       checked:false,
       email:'',
       pass:'',
-      cPass:''
+      cPass:'',
+      to_dashboard:false
     };
+
   }
 
   checkIt() {
@@ -61,12 +63,21 @@ export default class Register extends Component {
       });
    }
 
+  moveToDash() {
+    this.setState({ to_dashboard: true });
+  }
+
   registerUser(e){
 
     var email = document.getElementById("email").value;
     var password = document.getElementById("password").value;
 
-    firebase.auth().createUserWithEmailAndPassword(email, password).catch(function(error) {
+    firebase.auth().createUserWithEmailAndPassword(email, password)
+    .then(authUser =>  {
+        this.setState({ to_dashboard: true });
+    })
+    .catch(function(error) {
+
       // Handle Errors here.
       var errorCode = error.code;
       var errorMessage = error.message;
@@ -83,8 +94,13 @@ export default class Register extends Component {
     e.preventDefault();
   }
 
-  render () {
+    
+    render () {
     // https://react-bootstrap.github.io/components/forms/
+      if (this.state.to_dashboard == true) {
+            return <Redirect to='/dashboard' />
+      }
+
       return (
         <Container>
         <Col style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
