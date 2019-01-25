@@ -1,6 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { withRouter } from 'react-router'
+import { Button } from 'react-bootstrap'
 
 const NavButton = (props) => {
   const {
@@ -14,7 +15,7 @@ const NavButton = (props) => {
     ...rest
   } = props
   return (
-    <button
+    <Button
       {...rest} // `children` is just another prop!
       onClick={(event) => {
         onClick && onClick(event)

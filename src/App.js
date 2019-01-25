@@ -1,8 +1,13 @@
+
+// import logo from './logo.svg';
+import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
+// import './App.css';
+import Home from './views/Home';
+
 import React, { Component } from 'react';
 import {Route, Link} from 'react-router-dom';
-// import logo from './logo.svg';
-import './App.css';
-import Home from './views/Home';
+
+import { Button, Container, Row } from 'react-bootstrap';
 
 import Register from './views/Register';
 import Login from './views/Login';
@@ -13,6 +18,7 @@ import FBSettings from './views/FBSettings';
 import LogHealthData from './views/LogHealthData';
 import SleepViewer from './views/SleepViewer';
 import AdminPortal from './views/AdminPortal';
+
 
 var firebase = require("firebase");
 var config = {

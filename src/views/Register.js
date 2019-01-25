@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import {Link} from 'react-router-dom';
 import NavButton from './NavButton'
+import { Container, Row, Col, Button } from 'react-bootstrap'
 
-export default class Register extends Component { 
-  state = { 
+export default class Register extends Component {
+  state = {
   }
 
   constructor(props) {
@@ -35,31 +36,42 @@ export default class Register extends Component {
        });
     }
  }
-  
-  render () {                                   
+
+  render () {
       return (
-        <div>
-             <div id='signinContainer'>
+        <Container>
               <form id='form' onSubmit={this.onSubmit.bind(this)}>
-                <input className='input' name='email' type="text"
-                  placeholder="Email"/>
-                <input className='input' name='pass' type="password"
-                  placeholder="Password"/>          
-                <input className='input' name='cPass' type="password"  
-                  placeholder="Confirm Password"/>          
-                <button id='submit' type="submit">Sign Up</button>
+                <Row>
+                <Col xs={12}>
+                  <input className='input' name='email' type="text"
+                    placeholder="Email"/>
+                </Col>
+                <Col xs={12}>
+                  <input className='input' name='pass' type="password"
+                    placeholder="Password"/>
+                </Col>
+                <Col xs={12}>
+                <input className='input' name='cPass' type="password"
+                  placeholder="Confirm Password"/>
+                </Col>
+                </Row>
+                <Row>
+                    I'm an Administrator: <input type="checkbox" checked={this.state.checked} onChange={this.handleChange}/>
+                      {this.state.checked ? <input className='input' name='email' type="text"
+                      placeholder="Admin Code" onChange={this.onClick}/> : null}
+                </Row>
+                <Row>
+                <Col>
+                <Button variant='outline-primary' id='submit' type="submit">Sign Up</Button>
+                </Col>
+                </Row>
               </form>
-             </div>
-              <div>
-                I'm an Administrator: <input type="checkbox" checked={this.state.checked} onChange={this.handleChange}/>
-                  {this.state.checked ? <input className='input' name='email' type="text"
-                  placeholder="Admin Code" onChange={this.onClick}/> : null}
-              </div>
-             <div>
+
+           <Row>
               <NavButton to='/login'>Login</NavButton>
               <NavButton to='/dashboard'>Dashboard</NavButton>
-             </div>
-        </div>
+            </Row>
+        </Container>
       )
    }
 
