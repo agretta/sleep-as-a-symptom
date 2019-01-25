@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import NavButton from './NavButton'
+import NavButton from '../components/NavButton'
 import {Link} from 'react-router-dom';
 
 export default class FBSettings extends Component { 
