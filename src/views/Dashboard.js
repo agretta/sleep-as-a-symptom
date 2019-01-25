@@ -19,7 +19,7 @@ export default class Dashboard extends Component {
               <br></br>
               <NavButton to='/fitbit-settings'>FitBit Management</NavButton>
               <br></br>
-              <NavButton to='/admin-dashboard'>Admin Porta</NavButton>
+              <NavButton to='/admin-dashboard'>Admin Portal</NavButton>
               <br></br>
               <NavButton to='/'>Logout</NavButton>
         </div>
