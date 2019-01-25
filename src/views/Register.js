@@ -70,8 +70,13 @@ export default class Register extends Component {
       // Handle Errors here.
       var errorCode = error.code;
       var errorMessage = error.message;
-
-      alert(errorCode + '\n' + errorMessage);
+      
+      if( errorCode == 'auth/weak-password' ){
+        alert('Password must be 6 characters or longer.');
+      }
+      else{
+        alert(errorCode + '\n' + errorMessage);
+      }
       // ...
     });
 
