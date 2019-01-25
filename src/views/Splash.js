@@ -2,12 +2,13 @@ import React, { Component } from 'react';
 import {Link} from 'react-router-dom';
 import NavButton from './NavButton'
 
-export default class Splash extends Component { 
-  state = { 
+export default class Splash extends Component {
+  state = {
   }
-  
-  render () {                                   
+
+  render () {
       return (
+        
          <div>
               Splash
               <br></br>
