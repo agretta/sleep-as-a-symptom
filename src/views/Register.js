@@ -3,6 +3,8 @@ import {Link} from 'react-router-dom';
 import NavButton from './NavButton'
 import { Container, Row, Col, Button, FormControl, FormGroup, Form } from 'react-bootstrap'
 
+var firebase = require("firebase");
+
 export default class Register extends Component {
   state = {
   }
@@ -15,6 +17,7 @@ export default class Register extends Component {
     this.handleChangeEmail = this.handleChangeEmail.bind(this);
     this.handleChangePass = this.handleChangePass.bind(this);
     this.handleChangecPass = this.handleChangecPass.bind(this);
+    this.registerUser = this.registerUser.bind(this);
     this.state = {
       checked:false,
       email:'',
@@ -58,19 +61,36 @@ export default class Register extends Component {
       });
    }
 
+  registerUser(e){
+
+    var email = document.getElementById("email").value;
+    var password = document.getElementById("password").value;
+
+    firebase.auth().createUserWithEmailAndPassword(email, password).catch(function(error) {
+      // Handle Errors here.
+      var errorCode = error.code;
+      var errorMessage = error.message;
+
+      alert(errorCode + '\n' + errorMessage);
+      // ...
+    });
+
+    e.preventDefault();
+  }
+
   render () {
     // https://react-bootstrap.github.io/components/forms/
       return (
         <Container>
         <Col style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
-              <Form id='form' onSubmit={this.onSubmit.bind(this)}>
+              <Form id='form' onSubmit={this.registerUser}>
               <FormGroup>
                 <Row style={{display: 'flex', justifyContent: 'center',}}>
-                  <FormControl className='input' name='email' type="text"
+                  <FormControl className='input' name='email' type="text" id="email"
                     placeholder="Email" value={this.state.email} onChange={this.handleChangeEmail}/>
                 </Row>
                 <Row style={{display: 'flex', justifyContent: 'center',}}>
-                  <FormControl className='input' name='pass' type="password"
+                  <FormControl className='input' name='pass' type="password" id="password"
                     placeholder="Password" value={this.state.pass} onChange={this.handleChangePass}/>
                 </Row>
                 <Row style={{display: 'flex', justifyContent: 'center',}}>
@@ -96,14 +116,5 @@ export default class Register extends Component {
         </Container>
       )
    }
-
-  onSubmit(e){
-      var user = {
-          email: e.target.elements.email.value,
-          pass: e.target.elements.pass.value,
-          id: Math.floor(Math.random() * 10000000000)
-      }
-      console.log(user)
-  }
-
 }
+
