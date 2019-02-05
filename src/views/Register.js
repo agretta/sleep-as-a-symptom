@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import {Link} from 'react-router-dom';
-import NavButton from './NavButton'
+import {Redirect, Link} from 'react-router-dom';
+import NavButton from '../components/NavButton'
 import { Container, Row, Col, Button, FormControl, FormGroup, Form } from 'react-bootstrap'
 
 var firebase = require("firebase");
@@ -22,8 +22,10 @@ export default class Register extends Component {
       checked:false,
       email:'',
       pass:'',
-      cPass:''
+      cPass:'',
+      to_dashboard:false
     };
+
   }
 
   checkIt() {
@@ -61,25 +63,47 @@ export default class Register extends Component {
       });
    }
 
+  moveToDash() {
+    this.setState({ to_dashboard: true });
+  }
+
   registerUser(e){
 
     var email = document.getElementById("email").value;
     var password = document.getElementById("password").value;
+    var confirmPassword = document.getElementById("confirm-password").value;
 
-    firebase.auth().createUserWithEmailAndPassword(email, password).catch(function(error) {
+    if (password == confirmPassword) {
+      firebase.auth().createUserWithEmailAndPassword(email, password).then(authUser =>  {
+        this.setState({ to_dashboard: true });
+    }).catch(function(error) {
+
       // Handle Errors here.
       var errorCode = error.code;
       var errorMessage = error.message;
 
-      alert(errorCode + '\n' + errorMessage);
+      if( errorCode == 'auth/weak-password' ){
+        alert('Password must be 6 characters or longer.');
+      }
+      else{
+        alert(errorCode + '\n' + errorMessage);
+      }
       // ...
     });
+    } else {
+      alert("Passwords Do Not Match!");
+    }
 
     e.preventDefault();
   }
 
-  render () {
+
+    render () {
     // https://react-bootstrap.github.io/components/forms/
+      if (this.state.to_dashboard == true) {
+            return <Redirect to='/dashboard' />
+      }
+
       return (
         <Container>
         <Col style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
@@ -94,7 +118,7 @@ export default class Register extends Component {
                     placeholder="Password" value={this.state.pass} onChange={this.handleChangePass}/>
                 </Row>
                 <Row style={{display: 'flex', justifyContent: 'center',}}>
-                <FormControl className='input' name='cPass' type="password"
+                <FormControl className='input' name='cPass' type="password" id="confirm-password"
                   placeholder="Confirm Password" value={this.state.cPass} onChange={this.handleChangecPass}/>
                 </Row>
                 <Row style={{display: 'flex', justifyContent: 'center',}}>
