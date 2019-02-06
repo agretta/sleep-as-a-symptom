@@ -4,6 +4,8 @@ import {Redirect, Link} from 'react-router-dom';
 import NavButton from '../components/NavButton'
 import { Container, Row, Col, Button, FormControl, FormGroup, Form } from 'react-bootstrap'
 
+var firebase = require("firebase");
+
 export default class Login extends Component {
 
   state = {}
@@ -12,6 +14,7 @@ export default class Login extends Component {
     super(props)
     this.handleChangeEmail = this.handleChangeEmail.bind(this);
     this.handleChangePass = this.handleChangePass.bind(this);
+    this.login = this.login.bind(this);
     this.state = {
       email:'',
       pass:'',
@@ -33,7 +36,39 @@ export default class Login extends Component {
 
 
    moveToDash() {
-     this.setState({ to_dashboard: true });
+      this.setState({ to_dashboard: true });
+   }
+
+   login(e) {
+      var email = document.getElementById("email").value;
+      var password = document.getElementById("password").value;
+      firebase.auth().signInWithEmailAndPassword(email, password).then(authUser => {
+          this.setState({ to_dashboard: true });
+      }).catch(function(error) {
+
+        // Handle Errors here.
+        var errorCode = error.code;
+        var errorMessage = error.message;
+
+        /*
+          All authentication error codes:
+          https://firebase.google.com/docs/auth/admin/errors
+        */
+        switch (errorCode) {
+          case 'auth/weak-password':
+            alert('Password must be 6 characters or longer.');
+            break;
+          case 'auth/user-not-found':
+            alert('User not found. Please check your email and password');
+            break;
+          case 'auth/wrong-password':
+            alert('Invalid password! Please try again');
+            break;
+          default:
+            alert(errorCode + '\n' + errorMessage);
+        }
+      });
+      e.preventDefault();
    }
 
 
@@ -45,7 +80,7 @@ export default class Login extends Component {
         return (
           <Container>
           <Col style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
-                <Form id='form' onSubmit={this.registerUser}>
+                <Form id='form' onSubmit={this.login}>
                 <FormGroup>
                   <Row style={{display: 'flex', justifyContent: 'center',}}>
                     <FormControl className='input' name='email' type="text" id="email"

@@ -74,22 +74,20 @@ export default class Register extends Component {
     var confirmPassword = document.getElementById("confirm-password").value;
 
     if (password == confirmPassword) {
-      firebase.auth().createUserWithEmailAndPassword(email, password).then(authUser =>  {
+      firebase.auth().createUserWithEmailAndPassword(email, password).then(authUser => {
         this.setState({ to_dashboard: true });
-    }).catch(function(error) {
+      }).catch(function(error) {
+        // Handle Errors here.
+        var errorCode = error.code;
+        var errorMessage = error.message;
 
-      // Handle Errors here.
-      var errorCode = error.code;
-      var errorMessage = error.message;
-
-      if( errorCode == 'auth/weak-password' ){
-        alert('Password must be 6 characters or longer.');
-      }
-      else{
-        alert(errorCode + '\n' + errorMessage);
-      }
-      // ...
-    });
+        if (errorCode == 'auth/weak-password'){
+          alert('Password must be 6 characters or longer.');
+        }
+        else {
+          alert(errorCode + '\n' + errorMessage);
+        }
+      });
     } else {
       alert("Passwords Do Not Match!");
     }

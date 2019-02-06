@@ -5,10 +5,10 @@ import { Container, Row, Col, Button, FormControl, FormGroup, Form } from 'react
 
 var firebase = require("firebase");
 
-export default class AccountManagement extends Component { 
-  state = { 
+export default class AccountManagement extends Component {
+  state = {
   }
-  
+
   constructor(props) {
     super(props);
     this.handleChange = this.handleChange.bind(this);
@@ -65,7 +65,7 @@ export default class AccountManagement extends Component {
         }).catch( function(error) {
             var errorCode = error.code;
             var errorMessage = error.message;
-            
+
             alert(errorCode + '\n' + errorMessage);
         });
     }
@@ -77,7 +77,7 @@ export default class AccountManagement extends Component {
         }).catch( function(error) {
             var errorCode = error.code;
             var errorMessage = error.message;
-            
+
             if( errorCode == 'auth/weak-password' ){
               alert('Password must be 6 characters or longer.');
             }
@@ -89,7 +89,7 @@ export default class AccountManagement extends Component {
 
   }
 
-  render () {                                   
+  render () {
       return (
         <div>
               <Col style={{display: 'flex', justifyContent: 'left', alignItems: 'center', margin: '5%'}}>
@@ -100,7 +100,7 @@ export default class AccountManagement extends Component {
                         <FormControl className='input' name='email' type="text" id="email"
                           placeholder="Email" value={this.state.email} onChange={this.handleChangeEmail}/>
                       </Row>
-                        Update password: 
+                        Update password:
                       <Row style={{display: 'flex', justifyContent: 'center', margin:'2%'}}>
                         <FormControl className='input' name='pass' type="password" id="password"
                           placeholder="Password" value={this.state.pass} onChange={this.handleChangePass}/>
