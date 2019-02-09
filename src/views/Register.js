@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
-import {Link} from 'react-router-dom';
-import NavButton from './NavButton'
+import {Redirect, Link} from 'react-router-dom';
+import NavButton from '../components/NavButton'
 import { Container, Row, Col, Button, FormControl, FormGroup, Form } from 'react-bootstrap'
+
+var firebase = require("firebase");
 
 export default class Register extends Component {
   state = {
@@ -18,6 +20,7 @@ export default class Register extends Component {
     this.handleChangeFN = this.handleChangeFN.bind(this);
     this.handleChangeLN = this.handleChangeLN.bind(this);
     this.handleChangeInst = this.handleChangeInst.bind(this);
+    this.registerUser = this.registerUser.bind(this);
     this.state = {
       checked:false,
       email:'',
@@ -26,7 +29,9 @@ export default class Register extends Component {
       fn:'',
       ln:'',
       inst:'',
+      to_dashboard:false
     };
+
   }
 
   checkIt() {
@@ -79,12 +84,51 @@ export default class Register extends Component {
     });
   }
 
-  render () {
+  moveToDash() {
+    this.setState({ to_dashboard: true });
+  }
+
+  registerUser(e){
+
+    var email = document.getElementById("email").value;
+    var password = document.getElementById("password").value;
+    var confirmPassword = document.getElementById("confirm-password").value;
+
+    if (password == confirmPassword) {
+      firebase.auth().createUserWithEmailAndPassword(email, password).then(authUser =>  {
+        this.setState({ to_dashboard: true });
+    }).catch(function(error) {
+
+      // Handle Errors here.
+      var errorCode = error.code;
+      var errorMessage = error.message;
+
+      if( errorCode == 'auth/weak-password' ){
+        alert('Password must be 6 characters or longer.');
+      }
+      else{
+        alert(errorCode + '\n' + errorMessage);
+      }
+      // ...
+    });
+    } else {
+      alert("Passwords Do Not Match!");
+    }
+
+    e.preventDefault();
+  }
+
+
+    render () {
     // https://react-bootstrap.github.io/components/forms/
+      if (this.state.to_dashboard == true) {
+            return <Redirect to='/dashboard' />
+      }
+
       return (
         <Container>
         <Col style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
-              <Form id='form' onSubmit={this.onSubmit.bind(this)}>
+              <Form id='form' onSubmit={this.registerUser}>
               <FormGroup>
               <Row style={{display: 'flex', justifyContent: 'center',}}>
                 <FormControl className='input' name='cPass' type="password"
@@ -95,7 +139,7 @@ export default class Register extends Component {
                 placeholder="Last Name" value={this.state.ln} onChange={this.handleChangeLN}/>
               </Row>
                 <Row style={{display: 'flex', justifyContent: 'center',}}>
-                  <FormControl className='input' name='email' type="text"
+                  <FormControl className='input' name='email' type="text" id="email"
                     placeholder="Email" value={this.state.email} onChange={this.handleChangeEmail}/>
                 </Row>
                 <Row style={{display: 'flex', justifyContent: 'center',}}>
@@ -120,14 +164,4 @@ export default class Register extends Component {
         </Container>
       )
    }
-
-  onSubmit(e){
-      var user = {
-          email: e.target.elements.email.value,
-          pass: e.target.elements.pass.value,
-          id: Math.floor(Math.random() * 10000000000)
-      }
-      console.log(user)
-  }
-
 }

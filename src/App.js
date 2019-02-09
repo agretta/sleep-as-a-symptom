@@ -1,6 +1,5 @@
 
 // import logo from './logo.svg';
-import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 // import './App.css';
 import Home from './views/Home';
 
@@ -33,32 +32,6 @@ class App extends Component {
   render() {
     return (
       <div>
-        {/* Tempoary link navigation*/}
-          {/*<div>
-              TEMPORARY HARD LINKS
-              <br></br>
-              <Link to="/">Home</Link>
-              <br></br>
-              <Link to="/register">Register</Link>
-              <br></br>
-              <Link to="/login">Login</Link>
-              <br></br>
-              <Link to="/splash">Splash</Link>
-              <br></br>
-              <Link to="/dashboard">Dashboard</Link>
-              <br></br>
-              <Link to="/account-management">Account Management</Link>
-              <br></br>
-              <Link to="/log-health-data">Log Data</Link>
-              <br></br>
-              <Link to="/admin-dashboard">Admin Portal </Link>
-              <br></br>
-              <Link to="/sleep-viewer">Sleep Viewer </Link>
-              <br></br>
-              TEMPORARY HARD LINKS
-              <br></br>
-          </div> **/}
-              <br></br>
           <div>
               <Route exact={true} path='/' component={Splash} />
               <Route exact={true} path='/splash' component={Splash} />
@@ -71,7 +44,7 @@ class App extends Component {
               <Route exact={true} path='/fitbit-settings' component={FBSettings} />
               <Route exact={true} path='/log-health-data' component={LogHealthData} />
           </div>
-        </div>
+      </div>
     );
   }
 }

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {Link} from 'react-router-dom';
-import NavButton from './NavButton'
+import NavButton from '../components/NavButton'
 export default class SleepViewer extends Component { 
   state = { 
   }
