@@ -15,11 +15,17 @@ export default class Register extends Component {
     this.handleChangeEmail = this.handleChangeEmail.bind(this);
     this.handleChangePass = this.handleChangePass.bind(this);
     this.handleChangecPass = this.handleChangecPass.bind(this);
+    this.handleChangeFN = this.handleChangeFN.bind(this);
+    this.handleChangeLN = this.handleChangeLN.bind(this);
+    this.handleChangeInst = this.handleChangeInst.bind(this);
     this.state = {
       checked:false,
       email:'',
       pass:'',
-      cPass:''
+      cPass:'',
+      fn:'',
+      ln:'',
+      inst:'',
     };
   }
 
@@ -57,6 +63,21 @@ export default class Register extends Component {
         cPass: evt.target.value
       });
    }
+  handleChangeFN(evt) {
+     this.setState({
+       fn: evt.target.value
+     });
+  }
+  handleChangeLN(evt) {
+    this.setState({
+      ln: evt.target.value
+    });
+  }
+  handleChangeInst(evt) {
+    this.setState({
+      inst: evt.target.value
+    });
+  }
 
   render () {
     // https://react-bootstrap.github.io/components/forms/
@@ -65,30 +86,33 @@ export default class Register extends Component {
         <Col style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
               <Form id='form' onSubmit={this.onSubmit.bind(this)}>
               <FormGroup>
+              <Row style={{display: 'flex', justifyContent: 'center',}}>
+                <FormControl className='input' name='cPass' type="password"
+                placeholder="First Name" value={this.state.fn} onChange={this.handleChangeFN}/>
+              </Row>
+              <Row style={{display: 'flex', justifyContent: 'center',}}>
+                <FormControl className='input' name='cPass' type="password"
+                placeholder="Last Name" value={this.state.ln} onChange={this.handleChangeLN}/>
+              </Row>
                 <Row style={{display: 'flex', justifyContent: 'center',}}>
                   <FormControl className='input' name='email' type="text"
                     placeholder="Email" value={this.state.email} onChange={this.handleChangeEmail}/>
+                </Row>
+                <Row style={{display: 'flex', justifyContent: 'center',}}>
+                  <FormControl className='input' name='cPass' type="password"
+                  placeholder="Institution" value={this.state.inst} onChange={this.handleChangeInst}/>
                 </Row>
                 <Row style={{display: 'flex', justifyContent: 'center',}}>
                   <FormControl className='input' name='pass' type="password"
                     placeholder="Password" value={this.state.pass} onChange={this.handleChangePass}/>
                 </Row>
                 <Row style={{display: 'flex', justifyContent: 'center',}}>
-                <FormControl className='input' name='cPass' type="password"
+                  <FormControl className='input' name='cPass' type="password"
                   placeholder="Confirm Password" value={this.state.cPass} onChange={this.handleChangecPass}/>
                 </Row>
                 <Row style={{display: 'flex', justifyContent: 'center',}}>
-                    <Col xs={8}>I'm an Administrator:</Col>
-                    <Col xs={4}><FormControl type="checkbox" checked={this.state.checked} onChange={this.handleChange}/></Col>
-                </Row>
-                <Row>
-                    {this.state.checked ?
-                      <FormControl className='input' name='email' type="text" placeholder="Admin Code" onChange={this.onClick}/>
-                      : null}
-                </Row>
-                <Row style={{display: 'flex', justifyContent: 'center',}}>
-                <NavButton to='/login'>Have an account? Log in</NavButton>
-                <Button variant='outline-primary' id='submit' type="submit">Sign Up</Button>
+                  <NavButton to='/login'>Have an account? Log in</NavButton>
+                  <Button variant='outline-primary' id='submit' type="submit">Sign Up</Button>
                 </Row>
               </FormGroup>
               </Form>
