@@ -19,7 +19,7 @@ export default class Splash extends Component {
                 <br></br>
                 <Row style={{display: 'flex', justifyContent: 'center',}}>
                   <Col style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
-                    <NavButton to='/register'>Register</NavButton>
+                    <NavButton to='/register-type'>Register</NavButton>
                   </Col>
                 </Row>
                 <br></br>
