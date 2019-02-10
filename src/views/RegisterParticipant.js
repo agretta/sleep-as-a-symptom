@@ -19,7 +19,13 @@ export default class Register extends Component {
     this.handleChangecPass = this.handleChangecPass.bind(this);
     this.handleChangeFN = this.handleChangeFN.bind(this);
     this.handleChangeLN = this.handleChangeLN.bind(this);
-    this.handleChangeInst = this.handleChangeInst.bind(this);
+    this.handleChangeJobStatus = this.handleChangeJobStatus.bind(this);
+    this.handleChangeActivity = this.handleChangeActivity.bind(this);
+    this.handleChangeAge = this.handleChangeAge.bind(this);
+    this.handleChangeEthnicity = this.handleChangeEthnicity.bind(this);
+    this.handleChangeRace = this.handleChangeRace.bind(this);
+    this.handleChangeSex = this.handleChangeSex.bind(this);
+    this.handleChangeZip = this.handleChangeZip.bind(this);
     this.registerUser = this.registerUser.bind(this);
     this.state = {
       checked:false,
@@ -28,7 +34,13 @@ export default class Register extends Component {
       cPass:'',
       fn:'',
       ln:'',
-      inst:'',
+      job:'',
+      activity:'',
+      age:'',
+      ethnicity:'',
+      race:'',
+      sex:'',
+      zip:'',
       to_dashboard:false
     };
 
@@ -78,9 +90,39 @@ export default class Register extends Component {
       ln: evt.target.value
     });
   }
-  handleChangeInst(evt) {
+  handleChangeJobStatus(evt) {
     this.setState({
-      inst: evt.target.value
+      job: evt.target.value
+    });
+  }
+  handleChangeActivity(evt) {
+    this.setState({
+      activity: evt.target.value
+    });
+  }
+  handleChangeAge(evt) {
+    this.setState({
+      age: evt.target.value
+    });
+  }
+  handleChangeEthnicity(evt) {
+    this.setState({
+      ethncity: evt.target.value
+    });
+  }
+  handleChangeRace(evt) {
+    this.setState({
+      race: evt.target.value
+    });
+  }
+  handleChangeSex(evt) {
+    this.setState({
+      sex: evt.target.value
+    });
+  }
+  handleChangeZip(evt) {
+    this.setState({
+      zip: evt.target.value
     });
   }
 
@@ -131,11 +173,11 @@ export default class Register extends Component {
               <Form id='form' onSubmit={this.registerUser}>
               <FormGroup>
               <Row style={{display: 'flex', justifyContent: 'center',}}>
-                <FormControl className='input' name='fn' type="text"
+                <FormControl className='input' name='cPass' type="password"
                 placeholder="First Name" value={this.state.fn} onChange={this.handleChangeFN}/>
               </Row>
               <Row style={{display: 'flex', justifyContent: 'center',}}>
-                <FormControl className='input' name='ln' type="text"
+                <FormControl className='input' name='cPass' type="password"
                 placeholder="Last Name" value={this.state.ln} onChange={this.handleChangeLN}/>
               </Row>
                 <Row style={{display: 'flex', justifyContent: 'center',}}>
@@ -143,21 +185,50 @@ export default class Register extends Component {
                     placeholder="Email" value={this.state.email} onChange={this.handleChangeEmail}/>
                 </Row>
                 <Row style={{display: 'flex', justifyContent: 'center',}}>
-                  <FormControl className='input' name='inst' type="text"
-                  placeholder="Institution" value={this.state.inst} onChange={this.handleChangeInst}/>
-                </Row>
-                <Row style={{display: 'flex', justifyContent: 'center',}}>
-                  <FormControl className='input' name='pass' type="password"
+                  <FormControl className='input' name='pass' type="text"
                     placeholder="Password" value={this.state.pass} onChange={this.handleChangePass}/>
                 </Row>
                 <Row style={{display: 'flex', justifyContent: 'center',}}>
-                  <FormControl className='input' name='cPass' type="password"
+                  <FormControl className='input' name='cPass' type="text"
                   placeholder="Confirm Password" value={this.state.cPass} onChange={this.handleChangecPass}/>
+                </Row>
+                <Row style={{display: 'flex', justifyContent: 'center',}}>
+                  <FormControl className='input' name='job' type="text"
+                  placeholder="Job Status" value={this.state.job} onChange={this.handleChangeJobStatus}/>
+                </Row>
+                <Row style={{display: 'flex', justifyContent: 'center',}}>
+                  <FormControl className='input' name='activity' type="text"
+                  placeholder="Average Daily Activity Level" value={this.state.activity} onChange={this.handleChangeActivity}/>
+                </Row>
+                <Row style={{display: 'flex', justifyContent: 'center',}}>
+                  <FormControl className='input' name='age' type="text"
+                  placeholder="Age" value={this.state.age} onChange={this.handleChangeAge}/>
+                </Row>
+                <Row style={{display: 'flex', justifyContent: 'center',}}>
+                  <FormControl className='input' name='ethnicity' type="text"
+                  placeholder="Ethnicity" value={this.state.ethnicity} onChange={this.handleChangeEthnicity}/>
+                </Row>
+                <Row style={{display: 'flex', justifyContent: 'center',}}>
+                  <FormControl className='input' name='race' type="text"
+                  placeholder="Race" value={this.state.race} onChange={this.handleChangeRace}/>
+                </Row>
+                <Row style={{display: 'flex', justifyContent: 'center',}}>
+                  <FormControl className='input' name='sex' type="text"
+                  placeholder="Sex" value={this.state.sex} onChange={this.handleChangeSex}/>
+                </Row>
+                <Row style={{display: 'flex', justifyContent: 'center',}}>
+                  <FormControl className='input' name='zip' type="text"
+                  placeholder="Zip Code" value={this.state.zip} onChange={this.handleChangeZip}/>
+                </Row>
+                <Row style={{display: 'flex', justifyContent: 'center',}}>
+                    <Col xs={8}>I consent to study participation:</Col>
+                    <Col xs={4}><FormControl type="checkbox" checked={this.state.checked} onChange={this.handleChange}/></Col>
                 </Row>
                 <Row style={{display: 'flex', justifyContent: 'center',}}>
                   <NavButton to='/login'>Have an account? Log in</NavButton>
                   <Button variant='outline-primary' id='submit' type="submit">Sign Up</Button>
                 </Row>
+
               </FormGroup>
               </Form>
         </Col>
