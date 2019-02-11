@@ -15,6 +15,7 @@ export default class Login extends Component {
     this.handleChangeEmail = this.handleChangeEmail.bind(this);
     this.handleChangePass = this.handleChangePass.bind(this);
     this.login = this.login.bind(this);
+    this.sendForgotPasswordEmail = this.sendForgotPasswordEmail.bind(this);
     this.state = {
       email:'',
       pass:'',
@@ -72,6 +73,17 @@ export default class Login extends Component {
       e.preventDefault();
    }
 
+  sendForgotPasswordEmail() {
+    var email = prompt("Please enter your email");
+
+    firebase.auth().sendPasswordResetEmail(email).then(function() {
+      // Email sent.
+      alert("Please check your email for a pssword reset link");
+    }).catch(function(error) {
+      // An error happened.
+    });
+  }
+
 
   render () {
         if (this.state.to_dashboard == true) {
@@ -99,7 +111,7 @@ export default class Login extends Component {
                     <Button variant='outline-primary' id='submit' type="submit">Login</Button>
                   </Row>
                   <Row style={{display: 'flex', justifyContent: 'center',}}>
-                    <Button variant='outline-primary'>Forgot Password?</Button>
+                    <Button variant='outline-primary' onClick={this.sendForgotPasswordEmail}>Forgot Password?</Button>
                   </Row>
                 </FormGroup>
                 </Form>
