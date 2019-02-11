@@ -95,8 +95,11 @@ export default class Login extends Component {
                       placeholder="Password" value={this.state.pass} onChange={this.handleChangePass}/>
                   </Row>
 
-                <Row style={{display: 'flex', justifyContent: 'center',}}>
-                  <Button variant='outline-primary' id='submit' type="submit">Login</Button>
+                  <Row style={{display: 'flex', justifyContent: 'center',}}>
+                    <Button variant='outline-primary' id='submit' type="submit">Login</Button>
+                  </Row>
+                  <Row style={{display: 'flex', justifyContent: 'center',}}>
+                    <Button variant='outline-primary'>Forgot Password?</Button>
                   </Row>
                 </FormGroup>
                 </Form>
