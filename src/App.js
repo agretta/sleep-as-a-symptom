@@ -10,6 +10,7 @@ import { Button, Container, Row } from 'react-bootstrap';
 import {withRouter} from 'react-router';
 import PropTypes from "prop-types";
 
+import Header from './components/Header'
 import Register from './views/Register';
 import Login from './views/Login';
 import Dashboard from './views/Dashboard';
