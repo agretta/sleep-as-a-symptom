@@ -10,7 +10,8 @@ export default class Dashboard extends Component {
       return (
         <div>
             <div>
-                Dashboard
+              <h1>Dashboard</h1>
+              <NavButton to='/' onPress={() => this.props.navigation.goBack()}>Back</NavButton>
             </div>
             <Container>
               <Row>

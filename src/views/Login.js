@@ -18,7 +18,8 @@ export default class Login extends Component {
     this.state = {
       email:'',
       pass:'',
-      to_dashboard:false
+      to_dashboard:false,
+      title: "Login"
     };
   }
 
@@ -76,9 +77,12 @@ export default class Login extends Component {
         if (this.state.to_dashboard == true) {
               return <Redirect to='/dashboard' />
         }
-
         return (
           <Container>
+            <div className="header">
+                    <h1>{this.state.title}</h1>
+            </div>
+            <NavButton to='/' onPress={() => this.props.navigation.goBack()}>Back</NavButton>
           <Col style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
                 <Form id='form' onSubmit={this.login}>
                 <FormGroup>

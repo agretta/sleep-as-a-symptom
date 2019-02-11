@@ -6,6 +6,7 @@ import { Container, Row, Col, Button, FormControl, FormGroup, Form } from 'react
 var firebase = require("firebase");
 
 export default class FBSettings extends Component {
+<<<<<<< Updated upstream
   state = {
   }
 
@@ -32,6 +33,33 @@ export default class FBSettings extends Component {
         api_token : token,
     });
 
+=======
+   state = {
+   }
+
+   constructor(props) {
+     super(props);
+     this.handleChangeEmail = this.handleChangeEmail.bind(this);
+     this.handleChangePass = this.handleChangePass.bind(this);
+     this.handleChangecPass = this.handleChangecPass.bind(this);
+     this.state = {
+       fb_email:'',
+       fb_pass:'',
+       fb_auth:false,
+       title: 'FitBit Management'
+     };
+
+   }
+
+    handleChange(evt) {
+    if(this.state.checked !== evt.target.checked) {
+        this.setState({
+            checked:evt.target.checked
+        });
+    }
+    }
+    handleChangeEmail(evt) {
+>>>>>>> Stashed changes
     this.setState({
         fb_auth : true,
     });
@@ -88,6 +116,11 @@ export default class FBSettings extends Component {
 
           return (
              <Container>
+                <div className="header">
+                    <h1>{this.state.title}</h1>
+                    <NavButton to='/Dashboard' onPress={() => this.props.navigation.goBack()}>Back</NavButton>
+
+            </div>
              <Col style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
                    <Form id='form' onSubmit={this.setUserAuthtoken}>
                    <FormGroup>

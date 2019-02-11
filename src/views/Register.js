@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component,} from 'react';
 import {Redirect, Link} from 'react-router-dom';
 import NavButton from '../components/NavButton'
 import { Container, Row, Col, Button, FormControl, FormGroup, Form } from 'react-bootstrap'
@@ -8,6 +8,14 @@ var firebase = require("firebase");
 export default class Register extends Component {
   state = {
   }
+
+  static navigationOptions = ({ navigation }) => ({
+    title: `${navigation.state.params.title}`,
+     headerTitleStyle : {textAlign: 'center',alignSelf:'center'},
+        headerStyle:{
+            backgroundColor:'white',
+        },
+    });
 
   constructor(props) {
     super(props);
@@ -19,6 +27,7 @@ export default class Register extends Component {
     this.handleChangecPass = this.handleChangecPass.bind(this);
     this.registerUser = this.registerUser.bind(this);
     this.state = {
+      title: 'Registration',
       checked:false,
       email:'',
       pass:'',
@@ -96,6 +105,7 @@ export default class Register extends Component {
   }
 
 
+
     render () {
     // https://react-bootstrap.github.io/components/forms/
       if (this.state.to_dashboard == true) {
@@ -104,6 +114,13 @@ export default class Register extends Component {
 
       return (
         <Container>
+          <div>
+            <h1>
+              {this.state.title}
+            </h1>
+            <NavButton to='/' onPress={() => this.props.navigation.goBack()}>Back</NavButton>
+          </div>
+          
         <Col style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
               <Form id='form' onSubmit={this.registerUser}>
               <FormGroup>

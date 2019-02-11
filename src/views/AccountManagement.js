@@ -19,7 +19,8 @@ export default class AccountManagement extends Component {
     this.state = {
       email:'',
       pass:'',
-      cPass:''
+      cPass:'',
+      title: 'Account Management'
     };
   }
 
@@ -92,6 +93,9 @@ export default class AccountManagement extends Component {
   render () {
       return (
         <div>
+          <div className="header">
+                    <h1>{this.state.title}</h1>
+            </div>
               <Col style={{display: 'flex', justifyContent: 'left', alignItems: 'center', margin: '5%'}}>
                     <Form id='form' onSubmit={this.updateUser}>
                     <FormGroup>

@@ -8,7 +8,9 @@ export default class SleepViewer extends Component {
   render () {                                   
       return (
         <div>
-            SleepViewer
+          <h1>
+            SleepViewer 
+          </h1>
             <br></br>
             <NavButton to='/dashboard'>Dashboard</NavButton>
         </div>
