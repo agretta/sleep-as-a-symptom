@@ -107,7 +107,7 @@ export default class Register extends Component {
   }
   handleChangeEthnicity(evt) {
     this.setState({
-      ethncity: evt.target.value
+      ethnicity: evt.target.value
     });
   }
   handleChangeRace(evt) {
@@ -173,11 +173,11 @@ export default class Register extends Component {
               <Form id='form' onSubmit={this.registerUser}>
               <FormGroup>
               <Row style={{display: 'flex', justifyContent: 'center',}}>
-                <FormControl className='input' name='cPass' type="password"
+                <FormControl className='input' name='fn' type="text"
                 placeholder="First Name" value={this.state.fn} onChange={this.handleChangeFN}/>
               </Row>
               <Row style={{display: 'flex', justifyContent: 'center',}}>
-                <FormControl className='input' name='cPass' type="password"
+                <FormControl className='input' name='ln' type="text"
                 placeholder="Last Name" value={this.state.ln} onChange={this.handleChangeLN}/>
               </Row>
                 <Row style={{display: 'flex', justifyContent: 'center',}}>
@@ -185,11 +185,11 @@ export default class Register extends Component {
                     placeholder="Email" value={this.state.email} onChange={this.handleChangeEmail}/>
                 </Row>
                 <Row style={{display: 'flex', justifyContent: 'center',}}>
-                  <FormControl className='input' name='pass' type="text"
+                  <FormControl className='input' name='pass' type="password"
                     placeholder="Password" value={this.state.pass} onChange={this.handleChangePass}/>
                 </Row>
                 <Row style={{display: 'flex', justifyContent: 'center',}}>
-                  <FormControl className='input' name='cPass' type="text"
+                  <FormControl className='input' name='cPass' type="password"
                   placeholder="Confirm Password" value={this.state.cPass} onChange={this.handleChangecPass}/>
                 </Row>
                 <Row style={{display: 'flex', justifyContent: 'center',}}>
