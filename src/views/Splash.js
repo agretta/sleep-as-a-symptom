@@ -15,7 +15,7 @@ export default class Splash extends Component {
 
   render () {
       return (
-        
+
          <div>
               <Container>
               <div className="header">

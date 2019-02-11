@@ -19,8 +19,8 @@ import FBSettings from './views/FBSettings';
 import LogHealthData from './views/LogHealthData';
 import SleepViewer from './views/SleepViewer';
 import AdminPortal from './views/AdminPortal';
-import Header from './Header'
-
+import RegisterParticipant from './views/RegisterParticipant';
+import UserTypeFilter from './views/UserTypeFilter';
 
 var firebase = require("firebase");
 var config = {
@@ -53,6 +53,8 @@ class App extends Component {
               <Route exact={true} path='/account-management' component={AccountManagement} />
               <Route exact={true} path='/fitbit-settings' component={FBSettings} />
               <Route exact={true} path='/log-health-data' component={LogHealthData} />
+              <Route exact={true} path='/register-participant' component={RegisterParticipant} />
+              <Route exact={true} path='/register-type' component={UserTypeFilter} />
           </div>
         </Router>
       </div>
