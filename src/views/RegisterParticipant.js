@@ -27,6 +27,7 @@ export default class Register extends Component {
     this.handleChangeSex = this.handleChangeSex.bind(this);
     this.handleChangeZip = this.handleChangeZip.bind(this);
     this.registerUser = this.registerUser.bind(this);
+    this.allFieldsCompleted = this.allFieldsCompleted.bind(this);
     this.state = {
       checked:false,
       email:'',
@@ -130,109 +131,154 @@ export default class Register extends Component {
     this.setState({ to_dashboard: true });
   }
 
-  registerUser(e){
-    //TODO
-    var email = document.getElementById("email").value;
-    var password = document.getElementById("password").value;
-    var confirmPassword = document.getElementById("confirm-password").value;
+  registerUser(e) {
 
-    if (password == confirmPassword) {
-      firebase.auth().createUserWithEmailAndPassword(email, password).then(authUser =>  {
-        this.setState({ to_dashboard: true });
-    }).catch(function(error) {
+    var complete = this.allFieldsCompleted();
 
-      // Handle Errors here.
-      var errorCode = error.code;
-      var errorMessage = error.message;
+    if (complete) {
+      var email = this.state.email;
+      var password = this.state.pass;
+      var confirmPassword = this.state.cPass;
 
-      if( errorCode == 'auth/weak-password' ){
-        alert('Password must be 6 characters or longer.');
+      if (password == confirmPassword) {
+        firebase.auth().createUserWithEmailAndPassword(email, password).then(authUser =>  {
+          var user = firebase.auth().currentUser.uid;
+
+          firebase.database().ref( 'participants/' + user ).set({
+              first_name: this.state.fn,
+              last_name: this.state.ln,
+              job_status: this.state.job,
+              daily_activity_level: this.state.activity,
+              age: this.state.age,
+              ethnicity: this.state.ethnicity,
+              race: this.state.race,
+              sex: this.state.sex,
+              zip: this.state.zip
+          });
+
+          this.setState({ to_dashboard: true });
+      }).catch(function(error) {
+
+          // Handle Errors here.
+          var errorCode = error.code;
+          var errorMessage = error.message;
+
+          /*
+            All authentication error codes:
+            https://firebase.google.com/docs/auth/admin/errors
+          */
+          switch (errorCode) {
+            case 'auth/weak-password':
+              alert('Password must be 6 characters or longer.');
+              break;
+            case 'auth/user-not-found':
+              alert('User not found. Please check your email and password');
+              break;
+            case 'auth/wrong-password':
+              alert('Invalid password! Please try again');
+              break;
+            default:
+              alert(errorCode + '\n' + errorMessage);
+          }
+        });
+      } else {
+        alert("Passwords Do Not Match!");
       }
-      else{
-        alert(errorCode + '\n' + errorMessage);
-      }
-      // ...
-    });
     } else {
-      alert("Passwords Do Not Match!");
+      alert("Please complete all of the fields.");
     }
 
     e.preventDefault();
   }
 
+  allFieldsCompleted() {
+    return this.state.checked &&
+          this.state.email != '' &&
+          this.state.pass != '' &&
+          this.state.cPass != '' &&
+          this.state.fn != '' &&
+          this.state.ln != '' &&
+          this.state.job != '' &&
+          this.state.activity != '' &&
+          this.state.age != '' &&
+          this.state.ethnicity != '' &&
+          this.state.race != '' &&
+          this.state.sex != '' &&
+          this.state.zip != '';
+  }
 
-    render () {
+  render () {
     // https://react-bootstrap.github.io/components/forms/
       if (this.state.to_dashboard == true) {
             return <Redirect to='/dashboard' />
       }
 
-      return (
-        <Container>
-        <Col style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
-              <Form id='form' onSubmit={this.registerUser}>
-              <FormGroup>
+    return (
+      <Container>
+      <Col style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+            <Form id='form' onSubmit={this.registerUser}>
+            <FormGroup>
+            <Row style={{display: 'flex', justifyContent: 'center',}}>
+              <FormControl className='input' name='fn' type="text"
+              placeholder="First Name" value={this.state.fn} onChange={this.handleChangeFN}/>
+            </Row>
+            <Row style={{display: 'flex', justifyContent: 'center',}}>
+              <FormControl className='input' name='ln' type="text"
+              placeholder="Last Name" value={this.state.ln} onChange={this.handleChangeLN}/>
+            </Row>
               <Row style={{display: 'flex', justifyContent: 'center',}}>
-                <FormControl className='input' name='fn' type="text"
-                placeholder="First Name" value={this.state.fn} onChange={this.handleChangeFN}/>
+                <FormControl className='input' name='email' type="text" id="email"
+                  placeholder="Email" value={this.state.email} onChange={this.handleChangeEmail}/>
               </Row>
               <Row style={{display: 'flex', justifyContent: 'center',}}>
-                <FormControl className='input' name='ln' type="text"
-                placeholder="Last Name" value={this.state.ln} onChange={this.handleChangeLN}/>
+                <FormControl className='input' name='pass' type="password"
+                  placeholder="Password" value={this.state.pass} onChange={this.handleChangePass}/>
               </Row>
-                <Row style={{display: 'flex', justifyContent: 'center',}}>
-                  <FormControl className='input' name='email' type="text" id="email"
-                    placeholder="Email" value={this.state.email} onChange={this.handleChangeEmail}/>
-                </Row>
-                <Row style={{display: 'flex', justifyContent: 'center',}}>
-                  <FormControl className='input' name='pass' type="password"
-                    placeholder="Password" value={this.state.pass} onChange={this.handleChangePass}/>
-                </Row>
-                <Row style={{display: 'flex', justifyContent: 'center',}}>
-                  <FormControl className='input' name='cPass' type="password"
-                  placeholder="Confirm Password" value={this.state.cPass} onChange={this.handleChangecPass}/>
-                </Row>
-                <Row style={{display: 'flex', justifyContent: 'center',}}>
-                  <FormControl className='input' name='job' type="text"
-                  placeholder="Job Status" value={this.state.job} onChange={this.handleChangeJobStatus}/>
-                </Row>
-                <Row style={{display: 'flex', justifyContent: 'center',}}>
-                  <FormControl className='input' name='activity' type="text"
-                  placeholder="Average Daily Activity Level" value={this.state.activity} onChange={this.handleChangeActivity}/>
-                </Row>
-                <Row style={{display: 'flex', justifyContent: 'center',}}>
-                  <FormControl className='input' name='age' type="text"
-                  placeholder="Age" value={this.state.age} onChange={this.handleChangeAge}/>
-                </Row>
-                <Row style={{display: 'flex', justifyContent: 'center',}}>
-                  <FormControl className='input' name='ethnicity' type="text"
-                  placeholder="Ethnicity" value={this.state.ethnicity} onChange={this.handleChangeEthnicity}/>
-                </Row>
-                <Row style={{display: 'flex', justifyContent: 'center',}}>
-                  <FormControl className='input' name='race' type="text"
-                  placeholder="Race" value={this.state.race} onChange={this.handleChangeRace}/>
-                </Row>
-                <Row style={{display: 'flex', justifyContent: 'center',}}>
-                  <FormControl className='input' name='sex' type="text"
-                  placeholder="Sex" value={this.state.sex} onChange={this.handleChangeSex}/>
-                </Row>
-                <Row style={{display: 'flex', justifyContent: 'center',}}>
-                  <FormControl className='input' name='zip' type="text"
-                  placeholder="Zip Code" value={this.state.zip} onChange={this.handleChangeZip}/>
-                </Row>
-                <Row style={{display: 'flex', justifyContent: 'center',}}>
-                    <Col xs={8}>I consent to study participation:</Col>
-                    <Col xs={4}><FormControl type="checkbox" checked={this.state.checked} onChange={this.handleChange}/></Col>
-                </Row>
-                <Row style={{display: 'flex', justifyContent: 'center',}}>
-                  <NavButton to='/login'>Have an account? Log in</NavButton>
-                  <Button variant='outline-primary' id='submit' type="submit">Sign Up</Button>
-                </Row>
+              <Row style={{display: 'flex', justifyContent: 'center',}}>
+                <FormControl className='input' name='cPass' type="password"
+                placeholder="Confirm Password" value={this.state.cPass} onChange={this.handleChangecPass}/>
+              </Row>
+              <Row style={{display: 'flex', justifyContent: 'center',}}>
+                <FormControl className='input' name='job' type="text"
+                placeholder="Job Status" value={this.state.job} onChange={this.handleChangeJobStatus}/>
+              </Row>
+              <Row style={{display: 'flex', justifyContent: 'center',}}>
+                <FormControl className='input' name='activity' type="text"
+                placeholder="Average Daily Activity Level" value={this.state.activity} onChange={this.handleChangeActivity}/>
+              </Row>
+              <Row style={{display: 'flex', justifyContent: 'center',}}>
+                <FormControl className='input' name='age' type="text"
+                placeholder="Age" value={this.state.age} onChange={this.handleChangeAge}/>
+              </Row>
+              <Row style={{display: 'flex', justifyContent: 'center',}}>
+                <FormControl className='input' name='ethnicity' type="text"
+                placeholder="Ethnicity" value={this.state.ethnicity} onChange={this.handleChangeEthnicity}/>
+              </Row>
+              <Row style={{display: 'flex', justifyContent: 'center',}}>
+                <FormControl className='input' name='race' type="text"
+                placeholder="Race" value={this.state.race} onChange={this.handleChangeRace}/>
+              </Row>
+              <Row style={{display: 'flex', justifyContent: 'center',}}>
+                <FormControl className='input' name='sex' type="text"
+                placeholder="Sex" value={this.state.sex} onChange={this.handleChangeSex}/>
+              </Row>
+              <Row style={{display: 'flex', justifyContent: 'center',}}>
+                <FormControl className='input' name='zip' type="text"
+                placeholder="Zip Code" value={this.state.zip} onChange={this.handleChangeZip}/>
+              </Row>
+              <Row style={{display: 'flex', justifyContent: 'center',}}>
+                  <Col xs={8}>I consent to study participation:</Col>
+                  <Col xs={4}><FormControl type="checkbox" checked={this.state.checked} onChange={this.handleChange}/></Col>
+              </Row>
+              <Row style={{display: 'flex', justifyContent: 'center',}}>
+                <NavButton to='/login'>Have an account? Log in</NavButton>
+                <Button variant='outline-primary' id='submit' type="submit">Sign Up</Button>
+              </Row>
 
-              </FormGroup>
-              </Form>
-        </Col>
-        </Container>
-      )
-   }
+            </FormGroup>
+            </Form>
+      </Col>
+      </Container>
+    )
+  }
 }

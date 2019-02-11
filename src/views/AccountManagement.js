@@ -16,6 +16,7 @@ export default class AccountManagement extends Component {
     this.handleChangePass = this.handleChangePass.bind(this);
     this.handleChangecPass = this.handleChangecPass.bind(this);
     this.updateUser = this.updateUser.bind(this);
+    this.validPassword = this.validPassword.bind(this);
     this.state = {
       email:'',
       pass:'',
@@ -50,43 +51,73 @@ export default class AccountManagement extends Component {
        });
   }
 
-  updateUser(e){
+  updateUser(e) {
 
     // prevent form refresh
     e.preventDefault();
 
-    var user     = firebase.auth().currentUser;
-    var email    = document.getElementById("email").value;
-    var password = document.getElementById("password").value;
+    var user  = firebase.auth().currentUser;
+    var newEmail = document.getElementById("email").value;
+    var newPassword = document.getElementById("password").value;
 
-    if( email.length > 0 )
-    {
-        user.updateEmail( email ).then( function() {
-            alert( "Email updated." );
-        }).catch( function(error) {
-            var errorCode = error.code;
-            var errorMessage = error.message;
+    var currentPassword = prompt("Please enter your current password:");
+    firebase.auth().currentUser.reauthenticateWithCredential(
+      firebase.auth.EmailAuthProvider.credential(
+        user.email, currentPassword)
+      ).catch( function(error) {
+          // Handle Errors here.
+          var errorCode = error.code;
+          var errorMessage = error.message;
 
-            alert(errorCode + '\n' + errorMessage);
-        });
-    }
-
-    if( password.length > 0 )
-    {
-        user.updatePassword( password ).then( function() {
-            alert( "Password updated." );
-        }).catch( function(error) {
-            var errorCode = error.code;
-            var errorMessage = error.message;
-
-            if( errorCode == 'auth/weak-password' ){
+          /*
+            All authentication error codes:
+            https://firebase.google.com/docs/auth/admin/errors
+          */
+          switch (errorCode) {
+            case 'auth/weak-password':
               alert('Password must be 6 characters or longer.');
-            }
-            else{
+              break;
+            case 'auth/user-not-found':
+              alert('User not found. Please check your email and password');
+              break;
+            case 'auth/wrong-password':
+              alert('Invalid password! Please try again');
+              break;
+            default:
               alert(errorCode + '\n' + errorMessage);
-            }
-        });
-    }
+          }
+
+          return false;
+    }).then( function() {
+      if (newEmail.length > 0) {
+          user.updateEmail(newEmail).then( function() {
+              alert( "Email updated." );
+          }).catch( function(error) {
+              var errorCode = error.code;
+              var errorMessage = error.message;
+
+              alert(errorCode + '\n' + errorMessage);
+          });
+      }
+
+      if (newPassword.length > 0) {
+          user.updatePassword( newPassword ).then( function() {
+              alert( "Password updated." );
+          }).catch( function(error) {
+              var errorCode = error.code;
+              var errorMessage = error.message;
+
+              if (errorCode == 'auth/weak-password') {
+                alert('Password must be 6 characters or longer.');
+              } else {
+                alert(errorCode + '\n' + errorMessage);
+              }
+          });
+      }
+    });
+  }
+
+  validPassword(e) {
 
   }
 
