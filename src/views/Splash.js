@@ -29,7 +29,7 @@ export default class Splash extends Component {
                 <br></br>
                 <Row style={{display: 'flex', justifyContent: 'center',}}>
                   <Col style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
-                    <NavButton to='/register' onPress={() => this.props.navigation.navigate('Register', {title: 'Registration'})}>Register</NavButton>
+                    <NavButton to='/register-type' onPress={() => this.props.navigation.navigate('UserTypeFilter', {title: 'Registration'})}>Register</NavButton>
                   </Col>
                 </Row>
                 <br></br>
