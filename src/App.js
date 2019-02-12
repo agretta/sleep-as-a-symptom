@@ -42,8 +42,6 @@ class App extends Component {
       <div>
         <Router>
           <div>
-              <Header>
-              </Header>
               <Route exact={true} path='/' component={Splash} />
               <Route exact={true} path='/splash' component={Splash} />
               <Route exact={true} path='/register' component={Register} />
