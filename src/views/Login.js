@@ -78,7 +78,7 @@ export default class Login extends Component {
 
     firebase.auth().sendPasswordResetEmail(email).then(function() {
       // Email sent.
-      alert("Please check your email for a pssword reset link");
+      alert("Please check your email for a password reset link");
     }).catch(function(error) {
       // An error happened.
     });
