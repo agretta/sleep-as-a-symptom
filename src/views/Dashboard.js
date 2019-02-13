@@ -1,12 +1,35 @@
 import React, { Component } from 'react';
-import {Link} from 'react-router-dom';
+import {Redirect, Link} from 'react-router-dom';
 import NavButton from '../components/NavButton'
 import Header from '../components/Header'
 import { Container, Row, Col, Button, FormControl, FormGroup, Form } from 'react-bootstrap'
-export default class Dashboard extends Component { 
-  state = { 
+
+var firebase = require("firebase");
+
+export default class Dashboard extends Component {
+  state = {
   }
-  render () {                                   
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      email_verified: false
+    }
+  }
+
+
+  componentWillMount() {
+    var user  = firebase.auth().currentUser;
+    this.setState({
+      email_verified: user.emailVerified
+    });
+  }
+
+  render () {
+      if (this.state.email_verified == false) {
+        return <Redirect to='/verify-email' />
+      }
+
       return (
         <div>
             <Header title='Dashboard'></Header>
