@@ -22,6 +22,7 @@ import SleepViewer from './views/SleepViewer';
 import AdminPortal from './views/AdminPortal';
 import RegisterParticipant from './views/RegisterParticipant';
 import UserTypeFilter from './views/UserTypeFilter';
+import VerifyEmail from './views/VerifyEmail';
 
 var firebase = require("firebase");
 var config = {
@@ -54,6 +55,7 @@ class App extends Component {
               <Route exact={true} path='/log-health-data' component={LogHealthData} />
               <Route exact={true} path='/register-participant' component={RegisterParticipant} />
               <Route exact={true} path='/register-type' component={UserTypeFilter} />
+              <Route exact={true} path='/verify-email' component={VerifyEmail} />
           </div>
         </Router>
       </div>
