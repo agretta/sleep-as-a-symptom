@@ -14,7 +14,9 @@ export default class Dashboard extends Component {
       return (
         <div>
             <Header title='Verify Email'></Header>
-            <p> Please Verify Your Email To Continue </p>
+            <Row style={{display: 'flex', justifyContent: 'center',}}>
+            Please Verify Your Email To Continue
+            </Row>
         </div>
       )
    }
