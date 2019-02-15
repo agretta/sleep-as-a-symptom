@@ -10,12 +10,13 @@ class BackButton extends Component {
 
   render() {
     return (
-      <button
-        className="button icon-left"
+      <Button 
+        variant='link'
         onClick={this.context.router.history.goBack}>
-          Back
-      </button>
+          <img src={require("./back_button_icon.png")} height='10' width='10' ></img>
+      </Button>
     )
   }
 }
+
 export default withRouter(BackButton)

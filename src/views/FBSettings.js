@@ -1,6 +1,7 @@
 import React, {Component } from 'react';
 import {Redirect, Link} from 'react-router-dom';
 import NavButton from '../components/NavButton'
+import Header from '../components/Header'
 import { Container, Row, Col, Button, FormControl, FormGroup, Form } from 'react-bootstrap'
 
 var firebase = require("firebase");
@@ -59,6 +60,8 @@ export default class FBSettings extends Component {
      // https://react-bootstrap.github.io/components/forms/
        if (this.state.fb_auth == true) {
              return (
+              <div>
+                <Header title='FitBit Settings'></Header>
                 <Container>
                 <Col style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
                       <Form id='form_unlink_fitbit' onSubmit={this.deleteUserAuthtoken}>
@@ -82,12 +85,15 @@ export default class FBSettings extends Component {
                       </Form>
                 </Col>
                 </Container>
+              </div>
              )
 
 
        } else {
 
           return (
+            <div>
+            <Header title='FitBit Settings'></Header>
              <Container>
                 <div className="header">
                     <h1>{this.state.title}</h1>
@@ -113,6 +119,7 @@ export default class FBSettings extends Component {
                    </Form>
              </Col>
              </Container>
+             </div>
           )
        }
     }

@@ -13,7 +13,7 @@ export default class Dashboard extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      email_verified: false
+      email_verified: true
     }
   }
 

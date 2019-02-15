@@ -23,21 +23,17 @@ const Header = (props) => {
   }
 
   return (
+    <div>
+    <Nav justify>
     <Container>
-      <Navbar bg="white" expand="lg">
+    
+      <Navbar bg="white">
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <BackButton>
-        </BackButton>
-        <Nav  className="justify-content-center">
-          <Nav.Item></Nav.Item>
-          <Nav.Item>
-          <h3>{props.title}</h3>
-          </Nav.Item>
-        </Nav>
-        <Navbar.Collapse id="basic-navbar-nav">
+        </BackButton>        
           <Nav className="mr-auto">
           </Nav>
-           <Nav pullRight className="justify-content-end">
+           <Nav className="justify-content-end">
              <NavDropdown title="..." id="nav-dropdown">
                 <NavDropdown.Item onClick={onUserSettingsClick} href="/account-management">User Settings</NavDropdown.Item>
                 
@@ -45,10 +41,12 @@ const Header = (props) => {
                 <NavDropdown.Item onClick={onFBSettingsClick} href="/fitbit-settings">FitBit Settings</NavDropdown.Item>
               </NavDropdown>
             </Nav>
-        </Navbar.Collapse>
       </Navbar> 
+      
     </Container>
-
+    </Nav>
+        <h3 style={{textAlign: "center"}}>{props.title}</h3>
+        </div>
   );
 }
 

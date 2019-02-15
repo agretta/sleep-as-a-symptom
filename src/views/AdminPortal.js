@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import {Link} from 'react-router-dom';
 import NavButton from '../components/NavButton'
+import Header from '../components/Header'
 
 export default class AdminPortal extends Component { 
   state = { 
@@ -14,10 +15,7 @@ export default class AdminPortal extends Component {
   render () {                                   
       return (
         <div>
-            <div className="header">
-                    <h1>{this.state.title}</h1>
-                    <NavButton to='/Dashboard' onPress={() => this.props.navigation.goBack()}>Back</NavButton>
-            </div>
+           <Header title='Admin'></Header>
 
             <br></br>
             <NavButton to='/dashboard'>Dashboard</NavButton>

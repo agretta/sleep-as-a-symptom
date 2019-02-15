@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import NavButton from '../components/NavButton'
+import Header from '../components/Header'
 import { Container, Row, Col, Image} from 'react-bootstrap'
 
 export default class Splash extends Component {
@@ -18,9 +19,6 @@ export default class Splash extends Component {
 
          <div>
               <Container>
-              <div className="header">
-                    <h1>{this.state.title}</h1>
-            </div>
                 <Row style={{display: 'flex', justifyContent: 'center'}}>
                   <Col style={{display: 'flex', justifyContent: 'center', alignItems: 'center', maxHeight:'600px'}}>
                     <Image src= {require('./temp_icon.png')} style={{maxWidth:'100%', maxHeight: '100%'}} responsive/>
@@ -43,3 +41,4 @@ export default class Splash extends Component {
       )
    }
 }
+

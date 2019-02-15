@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import {Link} from 'react-router-dom';
 import NavButton from '../components/NavButton'
 import { Container, Row, Col, Button, FormControl, FormGroup, Form } from 'react-bootstrap'
-
+import Header from '../components/Header'
 var firebase = require("firebase");
 
 export default class AccountManagement extends Component {
@@ -206,9 +206,7 @@ export default class AccountManagement extends Component {
   render () {
       return (
         <div>
-          <div className="header">
-                    <h1>{this.state.title}</h1>
-            </div>
+         <Header title='User Settings'></Header>
               <Col style={{display: 'flex', justifyContent: 'left', alignItems: 'center', margin: '5%'}}>
                     <Form id='form'>
                     <FormGroup>
