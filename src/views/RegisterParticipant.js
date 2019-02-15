@@ -142,6 +142,8 @@ export default class Register extends Component {
 
       if (password == confirmPassword) {
         firebase.auth().createUserWithEmailAndPassword(email, password).then(authUser =>  {
+
+          firebase.auth().currentUser.sendEmailVerification();
           var user = firebase.auth().currentUser.uid;
 
           firebase.database().ref( 'participants/' + user ).set({
