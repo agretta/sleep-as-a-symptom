@@ -15,14 +15,32 @@ export default class FBSettings extends Component {
     this.setUserAuthtoken = this.setUserAuthtoken.bind(this);
     this.deleteUserAuthtoken = this.deleteUserAuthtoken.bind(this);
     this.state = {
-      fb_auth:false,
-      title: 'FitBit Management'
+      fb_auth : false,
+      title   : 'FitBit Settings',
     };
+  }
 
+  componentDidMount() {
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        var uid = firebase.auth().currentUser.uid;
+        var ref = firebase.database().ref( "users/" + uid );
+
+        ref.once("value").then((snapshot) => {
+            var token_exists = snapshot.child("api_token").exists();
+
+            this.setState({
+              fb_auth : token_exists,
+            });
+          });
+      } else {
+        // No user is signed in.
+        // So we don't do anything, sign in geeze. Paid content for the homies
+      }
+    });
   }
 
   setUserAuthtoken(e){
-
     var user = firebase.auth().currentUser.uid;
 
     // grab & parse the user's access token for the FB API
@@ -41,9 +59,8 @@ export default class FBSettings extends Component {
   }
 
   deleteUserAuthtoken(e){
-
     // grab the user's access token for the FB API
-    var user        = firebase.auth().currentUser.uid;
+    var user = firebase.auth().currentUser.uid;
 
     firebase.database().ref( 'users/' + user ).set({
         api_token : null,
@@ -55,10 +72,9 @@ export default class FBSettings extends Component {
   }
 
   //TODO: implement data deletion once we implement data import
-
      render () {
      // https://react-bootstrap.github.io/components/forms/
-       if (this.state.fb_auth == true) {
+       if (this.state.fb_auth) {
              return (
               <div>
                 <Header title='FitBit Settings'></Header>
@@ -87,10 +103,7 @@ export default class FBSettings extends Component {
                 </Container>
               </div>
              )
-
-
        } else {
-
           return (
             <div>
             <Header title='FitBit Settings'></Header>
@@ -118,5 +131,4 @@ export default class FBSettings extends Component {
           )
        }
     }
- }
-
+}
