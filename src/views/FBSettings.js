@@ -95,11 +95,6 @@ export default class FBSettings extends Component {
             <div>
             <Header title='FitBit Settings'></Header>
              <Container>
-                <div className="header">
-                    <h1>{this.state.title}</h1>
-                    <NavButton to='/Dashboard' onPress={() => this.props.navigation.goBack()}>Back</NavButton>
-
-            </div>
              <Col style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
                    <Form id='form' onSubmit={this.setUserAuthtoken}>
                    <FormGroup>
