@@ -4,6 +4,7 @@ import {Container, Nav, Navbar, NavDropdown, Button, Dropdown} from 'react-boots
 import PropTypes from 'prop-types'
 import BackButton from '../components/BackButton'
 import NavButton from '../components/NavButton'
+import Username from '../components/Username'
 
 const Header = (props) => {
   const {
@@ -31,6 +32,8 @@ const Header = (props) => {
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <BackButton>
         </BackButton>        
+        <Username>
+        </Username>
           <Nav className="mr-auto">
           </Nav>
            <Nav className="justify-content-end">
