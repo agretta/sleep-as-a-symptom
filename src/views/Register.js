@@ -103,47 +103,53 @@ export default class Register extends Component {
     var complete = this.allFieldsCompleted();
     if (complete) {
       var email = this.state.email;
+      var extension = email.substr(email.length - 3, email.length);
+
       var password = this.state.pass;
       var confirmPassword = this.state.cPass;
 
-      if (password == confirmPassword) {
-        firebase.auth().createUserWithEmailAndPassword(email, password).then(authUser => {
+      if (extension == 'edu' || extension == 'gov') {
+        if (password == confirmPassword) {
+          firebase.auth().createUserWithEmailAndPassword(email, password).then(authUser => {
 
-          firebase.auth().currentUser.sendEmailVerification();
-          var user = firebase.auth().currentUser.uid;
+            firebase.auth().currentUser.sendEmailVerification();
+            var user = firebase.auth().currentUser.uid;
 
-          firebase.database().ref( 'researchers/' + user ).set({
-              first_name: this.state.fn,
-              last_name: this.state.ln,
-              institution: this.state.inst
+            firebase.database().ref( 'researchers/' + user ).set({
+                first_name: this.state.fn,
+                last_name: this.state.ln,
+                institution: this.state.inst
+            });
+
+            this.setState({ to_dashboard: true });
+          }).catch(function(error) {
+            // Handle Errors here.
+            var errorCode = error.code;
+            var errorMessage = error.message;
+
+            /*
+              All authentication error codes:
+              https://firebase.google.com/docs/auth/admin/errors
+            */
+            switch (errorCode) {
+              case 'auth/weak-password':
+                alert('Password must be 6 characters or longer.');
+                break;
+              case 'auth/user-not-found':
+                alert('User not found. Please check your email and password');
+                break;
+              case 'auth/wrong-password':
+                alert('Invalid password! Please try again');
+                break;
+              default:
+                alert(errorCode + '\n' + errorMessage);
+            }
           });
-
-          this.setState({ to_dashboard: true });
-        }).catch(function(error) {
-          // Handle Errors here.
-          var errorCode = error.code;
-          var errorMessage = error.message;
-
-          /*
-            All authentication error codes:
-            https://firebase.google.com/docs/auth/admin/errors
-          */
-          switch (errorCode) {
-            case 'auth/weak-password':
-              alert('Password must be 6 characters or longer.');
-              break;
-            case 'auth/user-not-found':
-              alert('User not found. Please check your email and password');
-              break;
-            case 'auth/wrong-password':
-              alert('Invalid password! Please try again');
-              break;
-            default:
-              alert(errorCode + '\n' + errorMessage);
-          }
-        });
+        } else {
+          alert("Passwords Do Not Match!");
+        }
       } else {
-        alert("Passwords Do Not Match!");
+        alert("Please use a .edu or .gov email address");
       }
     } else {
       alert("Please complete all of the fields.");
