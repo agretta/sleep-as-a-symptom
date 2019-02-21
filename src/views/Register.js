@@ -108,7 +108,7 @@ export default class Register extends Component {
       var password = this.state.pass;
       var confirmPassword = this.state.cPass;
 
-      if (extension == 'edu' || extension == 'gov') {
+      if (extension == 'edu' || extension == 'gov' || extension == 'org') {
         if (password == confirmPassword) {
           firebase.auth().createUserWithEmailAndPassword(email, password).then(authUser => {
 
@@ -149,7 +149,7 @@ export default class Register extends Component {
           alert("Passwords Do Not Match!");
         }
       } else {
-        alert("Please use a .edu or .gov email address");
+        alert("Please use a .edu, .org, or .gov email address");
       }
     } else {
       alert("Please complete all of the fields.");
