@@ -34,8 +34,8 @@ export default class FBSettings extends Component {
             });
           });
       } else {
-        // No user is signed in.
-        // So we don't do anything, sign in geeze. Paid content for the homies
+        // No user is signed in,
+        // so we don't do anything
       }
     });
   }
