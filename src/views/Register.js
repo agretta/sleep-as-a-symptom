@@ -118,7 +118,8 @@ export default class Register extends Component {
             firebase.database().ref( 'researchers/' + user ).set({
                 first_name: this.state.fn,
                 last_name: this.state.ln,
-                institution: this.state.inst
+                institution: this.state.inst,
+                email_verified: false
             });
 
             this.setState({ to_dashboard: true });

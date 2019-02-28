@@ -154,7 +154,8 @@ export default class Register extends Component {
               ethnicity: this.state.ethnicity,
               race: this.state.race,
               sex: this.state.sex,
-              zip: this.state.zip
+              zip: this.state.zip,
+              email_verified: false
           });
 
           this.setState({ to_dashboard: true });

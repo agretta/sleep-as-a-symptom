@@ -26,9 +26,28 @@ export default class Dashboard extends Component {
           this.setState({
             to_dashboard: true
           });
-          console.log('verified');
+
+          //update the email_verified key in Firebase
+          var keyArr = [];
+
+          firebase.database().ref('participants').orderByKey().once('value', function(snapshot) {
+
+            snapshot.forEach(function(childSnapshot) {
+              keyArr.push(childSnapshot.key);
+            });
+
+          }).then(function() {
+              if (keyArr.indexOf(user.uid) > -1) {
+                firebase.database().ref( 'participants/' + user.uid ).update({
+                  email_verified: true
+                });
+              } else {
+                firebase.database().ref( 'researchers/' + user.uid ).update({
+                  email_verified: true
+                });
+              }
+            });
         } else {
-          console.log('unverified');
         }
       });
     }
