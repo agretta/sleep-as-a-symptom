@@ -48,9 +48,24 @@ export default class FBSettings extends Component {
     var token       = token_regex.exec( window.location.href )[0].substring(13);
 
     // set the token in the DB
-    firebase.database().ref( 'users/' + user ).set({
-        api_token : token,
-    });
+    var keyArr = [];
+    firebase.database().ref('participants').orderByKey().once('value', function(snapshot) {
+
+      snapshot.forEach(function(childSnapshot) {
+        keyArr.push(childSnapshot.key);
+      });
+
+    }).then(function() {
+        if (keyArr.indexOf(user) > -1) {
+          firebase.database().ref( 'participants/' + user ).update({
+            api_token: token
+          });
+        } else {
+          firebase.database().ref( 'researchers/' + user ).update({
+            api_token: token
+          });
+        }
+      });
 
     this.setState({
         fb_auth : true,
