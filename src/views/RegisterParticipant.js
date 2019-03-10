@@ -28,6 +28,7 @@ export default class Register extends Component {
     this.handleChangeZip = this.handleChangeZip.bind(this);
     this.registerUser = this.registerUser.bind(this);
     this.allFieldsCompleted = this.allFieldsCompleted.bind(this);
+    this.allFieldsValid = this.allFieldsValid.bind(this);
     this.state = {
       checked:false,
       email:'',
@@ -136,55 +137,58 @@ export default class Register extends Component {
     var complete = this.allFieldsCompleted();
 
     if (complete) {
-      var email = this.state.email;
-      var password = this.state.pass;
-      var confirmPassword = this.state.cPass;
-      if (password == confirmPassword) {
-        firebase.auth().createUserWithEmailAndPassword(email, password).then(authUser =>  {
+      var valid = this.allFieldsValid();
+      if (valid) {
+        var email = this.state.email;
+        var password = this.state.pass;
+        var confirmPassword = this.state.cPass;
+        if (password == confirmPassword) {
+          firebase.auth().createUserWithEmailAndPassword(email, password).then(authUser =>  {
 
-          firebase.auth().currentUser.sendEmailVerification();
-          var user = firebase.auth().currentUser.uid;
+            firebase.auth().currentUser.sendEmailVerification();
+            var user = firebase.auth().currentUser.uid;
 
-          firebase.database().ref( 'participants/' + user ).set({
-              first_name: this.state.fn,
-              last_name: this.state.ln,
-              job_status: this.state.job,
-              daily_activity_level: this.state.activity,
-              age: this.state.age,
-              ethnicity: this.state.ethnicity,
-              race: this.state.race,
-              sex: this.state.sex,
-              zip: this.state.zip,
-              email_verified: false
+            firebase.database().ref( 'participants/' + user ).set({
+                first_name: this.state.fn,
+                last_name: this.state.ln,
+                job_status: this.state.job,
+                daily_activity_level: this.state.activity,
+                age: this.state.age,
+                ethnicity: this.state.ethnicity,
+                race: this.state.race,
+                sex: this.state.sex,
+                zip: this.state.zip,
+                email_verified: false
+            });
+
+            this.setState({ to_dashboard: true });
+        }).catch(function(error) {
+
+            // Handle Errors here.
+            var errorCode = error.code;
+            var errorMessage = error.message;
+
+            /*
+              All authentication error codes:
+              https://firebase.google.com/docs/auth/admin/errors
+            */
+            switch (errorCode) {
+              case 'auth/weak-password':
+                alert('Password must be 6 characters or longer.');
+                break;
+              case 'auth/user-not-found':
+                alert('User not found. Please check your email and password');
+                break;
+              case 'auth/wrong-password':
+                alert('Invalid password! Please try again');
+                break;
+              default:
+                alert(errorCode + '\n' + errorMessage);
+            }
           });
-
-          this.setState({ to_dashboard: true });
-      }).catch(function(error) {
-
-          // Handle Errors here.
-          var errorCode = error.code;
-          var errorMessage = error.message;
-
-          /*
-            All authentication error codes:
-            https://firebase.google.com/docs/auth/admin/errors
-          */
-          switch (errorCode) {
-            case 'auth/weak-password':
-              alert('Password must be 6 characters or longer.');
-              break;
-            case 'auth/user-not-found':
-              alert('User not found. Please check your email and password');
-              break;
-            case 'auth/wrong-password':
-              alert('Invalid password! Please try again');
-              break;
-            default:
-              alert(errorCode + '\n' + errorMessage);
-          }
-        });
-      } else {
-        alert("Passwords Do Not Match!");
+        } else {
+          alert("Passwords Do Not Match!");
+        }
       }
     } else {
       alert("Please complete all of the fields.");
@@ -207,6 +211,29 @@ export default class Register extends Component {
           this.state.race != '' &&
           this.state.sex != '' &&
           this.state.zip != '';
+  }
+
+  allFieldsValid() {
+
+    var email = this.state.email
+    var extension = email.substr(email.length - 3, email.length);
+
+    if (/\d/.test(this.state.fn) || /\d/.test(this.state.ln)) {
+      alert("Please enter a valid name");
+      return false;
+    }
+
+    if (isNaN(this.state.age) || parseInt(this.state.age) < 0 || parseInt(this.state.age) > 110) {
+      alert("Please enter a valid age");
+      return false;
+    }
+
+    if (isNaN(this.state.zip) || this.state.zip.toString().length != 5) {
+      alert("Please enter a valid five digit zip code");
+      return false;
+    }
+
+    return true;
   }
 
   render () {

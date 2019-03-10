@@ -30,6 +30,7 @@ export default class Register extends Component {
     this.handleChangeInst = this.handleChangeInst.bind(this);
     this.registerUser = this.registerUser.bind(this);
     this.allFieldsCompleted = this.allFieldsCompleted.bind(this);
+    this.allFieldsValid = this.allFieldsValid.bind(this);
     this.state = {
       title: 'Registration',
       checked:false,
@@ -102,13 +103,14 @@ export default class Register extends Component {
 
     var complete = this.allFieldsCompleted();
     if (complete) {
-      var email = this.state.email;
-      var extension = email.substr(email.length - 3, email.length);
+      var valid = this.allFieldsValid();
+      if (valid) {
+        var email = this.state.email;
+        var extension = email.substr(email.length - 3, email.length);
 
-      var password = this.state.pass;
-      var confirmPassword = this.state.cPass;
+        var password = this.state.pass;
+        var confirmPassword = this.state.cPass;
 
-      if (extension == 'edu' || extension == 'gov' || extension == 'org') {
         if (password == confirmPassword) {
           firebase.auth().createUserWithEmailAndPassword(email, password).then(authUser => {
 
@@ -149,8 +151,6 @@ export default class Register extends Component {
         } else {
           alert("Passwords Do Not Match!");
         }
-      } else {
-        alert("Please use a .edu, .org, or .gov email address");
       }
     } else {
       alert("Please complete all of the fields.");
@@ -166,6 +166,24 @@ export default class Register extends Component {
           this.state.fn != '' &&
           this.state.ln != '' &&
           this.state.inst != '';
+  }
+
+  allFieldsValid() {
+
+    var email = this.state.email
+    var extension = email.substr(email.length - 3, email.length);
+
+    if (extension != 'edu' && extension != 'gov' && extension != 'org') {
+      alert("Please use a .edu, .org, or .gov email address");
+      return false;
+    }
+
+    if (/\d/.test(this.state.fn) || /\d/.test(this.state.ln)) {
+      alert("Please enter a valid name");
+      return false;
+    }
+
+    return true;
   }
 
   render () {
