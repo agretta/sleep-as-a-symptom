@@ -4,10 +4,13 @@
 import Home from './views/Home';
 
 import React, { Component } from 'react';
-import {Route, Link} from 'react-router-dom';
+import {BrowserRouter as Router,Route, Link} from 'react-router-dom';
 
 import { Button, Container, Row } from 'react-bootstrap';
+import {withRouter} from 'react-router';
+import PropTypes from "prop-types";
 
+import Header from './components/Header'
 import Register from './views/Register';
 import Login from './views/Login';
 import Dashboard from './views/Dashboard';
@@ -17,7 +20,9 @@ import FBSettings from './views/FBSettings';
 import LogHealthData from './views/LogHealthData';
 import SleepViewer from './views/SleepViewer';
 import AdminPortal from './views/AdminPortal';
-
+import RegisterParticipant from './views/RegisterParticipant';
+import UserTypeFilter from './views/UserTypeFilter';
+import VerifyEmail from './views/VerifyEmail';
 
 var firebase = require("firebase");
 var config = {
@@ -28,10 +33,15 @@ var config = {
 };
 firebase.initializeApp(config);
 
+
+
 class App extends Component {
+
+
   render() {
     return (
       <div>
+        <Router>
           <div>
               <Route exact={true} path='/' component={Splash} />
               <Route exact={true} path='/splash' component={Splash} />
@@ -43,7 +53,11 @@ class App extends Component {
               <Route exact={true} path='/account-management' component={AccountManagement} />
               <Route exact={true} path='/fitbit-settings' component={FBSettings} />
               <Route exact={true} path='/log-health-data' component={LogHealthData} />
+              <Route exact={true} path='/register-participant' component={RegisterParticipant} />
+              <Route exact={true} path='/register-type' component={UserTypeFilter} />
+              <Route exact={true} path='/verify-email' component={VerifyEmail} />
           </div>
+        </Router>
       </div>
     );
   }

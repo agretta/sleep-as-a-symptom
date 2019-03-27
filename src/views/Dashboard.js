@@ -1,17 +1,38 @@
 import React, { Component } from 'react';
-import {Link} from 'react-router-dom';
+import {Redirect, Link} from 'react-router-dom';
 import NavButton from '../components/NavButton'
+import Header from '../components/Header'
 import { Container, Row, Col, Button, FormControl, FormGroup, Form } from 'react-bootstrap'
-export default class Dashboard extends Component { 
-  state = { 
+
+var firebase = require("firebase");
+
+export default class Dashboard extends Component {
+  state = {
   }
-  
-  render () {                                   
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      email_verified: true
+    }
+  }
+
+
+  componentWillMount() {
+    var user  = firebase.auth().currentUser;
+    this.setState({
+      email_verified: user.emailVerified
+    });
+  }
+
+  render () {
+      if (this.state.email_verified == false) {
+        return <Redirect to='/verify-email' />
+      }
+
       return (
         <div>
-            <div>
-                Dashboard
-            </div>
+            <Header title='Dashboard'></Header>
             <Container>
               <Row>
                 <Col style={{display: 'flex', justifyContent: 'center', alignItems: 'center', margin:'1%'}}>
@@ -21,16 +42,6 @@ export default class Dashboard extends Component {
               <Row>
                 <Col style={{display: 'flex', justifyContent: 'center', alignItems: 'center', margin:'1%'}}>
                   <NavButton to='/log-health-data'>Log Data</NavButton>
-                </Col>
-              </Row>
-              <Row>
-                <Col style={{display: 'flex', justifyContent: 'center', alignItems: 'center', margin:'1%'}}>
-                  <NavButton to='/account-management'>Account Management</NavButton>
-                </Col>
-              </Row>
-              <Row>
-                <Col style={{display: 'flex', justifyContent: 'center', alignItems: 'center', margin:'1%'}}>
-                  <NavButton to='/fitbit-settings'>FitBit Management</NavButton>
                 </Col>
               </Row>
               <Row>
