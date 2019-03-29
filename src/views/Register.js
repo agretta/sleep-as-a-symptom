@@ -40,9 +40,16 @@ export default class Register extends Component {
       fn:'',
       ln:'',
       inst:'',
-      to_dashboard:false
+      to_dashboard:false,
+      valid_researchers:[]
     };
 
+    var res = firebase.database().ref("valid_researchers/");
+    res.orderByKey().on("child_added", data  => {
+      this.state.valid_researchers.push(data.val().email);
+      this.setState(this.state.valid_researchers);
+      console.log(this.state.valid_researchers);
+    });
   }
 
   checkIt() {
@@ -121,7 +128,8 @@ export default class Register extends Component {
                 first_name: this.state.fn,
                 last_name: this.state.ln,
                 institution: this.state.inst,
-                email_verified: false
+                email_verified: false,
+                email: this.state.email
             });
 
             this.setState({ to_dashboard: true });
@@ -173,10 +181,20 @@ export default class Register extends Component {
     var email = this.state.email
     var extension = email.substr(email.length - 3, email.length);
 
+
     if (extension != 'edu' && extension != 'gov' && extension != 'org') {
       alert("Please use a .edu, .org, or .gov email address");
       return false;
     }
+
+    if (!this.state.valid_researchers.includes(email)) {
+      console.log(this.state.valid_researchers);
+      alert("Please have another researcher validate your email")
+      return false;
+
+    }
+
+
 
     if (/\d/.test(this.state.fn) || /\d/.test(this.state.ln)) {
       alert("Please enter a valid name");
