@@ -15,8 +15,6 @@ class Username extends Component {
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
         // User is signed in.
-        console.log( 'am I insane' + user.uid );
-        
         var ref = firebase.database().ref("researchers/" + user.uid);
         ref.once("value")
           .then((snapshot) => {
