@@ -8,7 +8,7 @@ import { Container, Col, Row, Form, FormGroup, FormControl, Button, Modal} from 
 var firebase = require("firebase");
 // Attach an asynchronous callback to read the data at our posts reference
 
-export default class AdminPortal extends Component { 
+export default class AdminPortal extends Component {
 
 
   constructor(props) {
@@ -95,12 +95,14 @@ export default class AdminPortal extends Component {
       return (
         <div>
           <Header title={this.state.title}></Header>
+          Remove authorized researcher:
             <Select key={this.state.update}
                 value={this.state.selectedOption}
                 onChange={this.handleChange}
                 options={this.state.options}
               />
 
+          Add authorized researcher:
           <Col style={{display: 'flex', justifyContent: '', alignItems: 'center'}}>
                 <Form id='form' onSubmit={this.addResearcher}>
                   <FormGroup>
@@ -108,15 +110,18 @@ export default class AdminPortal extends Component {
                     <FormControl className='input' name='email' type="text" id="email"
                       placeholder="Email" value={this.state.email} onChange={this.handleChangeEmail}/>
                   </Row>
- 
-                  <Row style={{display: 'flex', justifyContent: 'center',}}>
+
+                  <Row style={{display: 'flex', justifyContent: 'left',}}>
                     <Button variant='outline-primary' onClick={this.addResearcher}>Add Researcher</Button>
                   </Row>
-                </FormGroup>
+                  <Row style={{display: 'flex', justifyContent: 'left',}}>
+                  <NavButton to='/dashboard'>Dashboard</NavButton>
+                  </Row>
+                  </FormGroup>
                 </Form>
+
           </Col>
 
-            <NavButton to='/dashboard'>Dashboard</NavButton>
 
         <Modal show={this.state.show} onHide={this.handleCloseExit}>
           <Modal.Header closeButton>
@@ -125,10 +130,10 @@ export default class AdminPortal extends Component {
           <Modal.Body>{this.state.selectedOptionName} </Modal.Body>
           <Modal.Footer>
             <Button variant="secondary" onClick={this.handleCloseExit}>
-              Exit 
+              Exit
             </Button>
             <Button variant="primary" onClick={this.handleClose}>
-              Remove Researcher 
+              Remove Researcher
             </Button>
           </Modal.Footer>
         </Modal>
