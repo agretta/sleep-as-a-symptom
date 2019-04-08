@@ -20,19 +20,39 @@ export default class SleepViewer extends Component {
   componentDidMount() {
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
-        var uid = firebase.auth().currentUser.uid;
-        var ref = firebase.database().ref( "users/" + uid );
+        // grab the unique user id and check if it matches a researcher or participant
+        var uid             = firebase.auth().currentUser.uid;
+        var participant_ref = firebase.database().ref( "participants/" + uid );
+        var researcher_ref  = firebase.database().ref( "researchers/" + uid );
 
-        ref.once("value").then((snapshot) => {
-            var token_exists = snapshot.child("api_token").exists();
+        // check if a participant profile exists
+        participant_ref.once("value").then((snapshot) => {
+          var token_exists = snapshot.child("api_token").exists();
 
+          // we only need a state update if a profile exists
+          if( token_exists ) {
             this.setState({
               fb_auth : token_exists,
             });
-          });
+          }
+
+        });
+
+        // check if a researcher profile exists
+        researcher_ref.once("value").then((snapshot) => {
+          var token_exists = snapshot.child("api_token").exists();
+
+          // we only need a state update if a profile exists
+          if( token_exists ) {
+            this.setState({
+              fb_auth : token_exists,
+            });
+          }
+
+        });
       } else {
         // No user is signed in,
-        // so we don't do anything.
+        // so we don't do anything
       }
     });
   }
