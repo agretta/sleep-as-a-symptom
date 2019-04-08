@@ -81,12 +81,25 @@ export default class FBSettings extends Component {
           firebase.database().ref( 'participants/' + user ).update({
             api_token: token
           });
-        } else {
+        }
+      });
+
+    //clear for researcher check
+    keyArr = [];
+
+    firebase.database().ref('researchers').orderByKey().once('value', function(snapshot) {
+
+      snapshot.forEach(function(childSnapshot) {
+        keyArr.push(childSnapshot.key);
+      });
+
+    }).then(function() {
+        if (keyArr.indexOf(user) > -1) {
           firebase.database().ref( 'researchers/' + user ).update({
             api_token: token
           });
         }
-      });
+    });
 
     this.setState({
         fb_auth : true,
@@ -107,12 +120,23 @@ export default class FBSettings extends Component {
 
     }).then(function() {
       if (keyArr.indexOf(user) > -1) {
-        firebase.database().ref( 'participants/' + user ).set({
+        firebase.database().ref( 'participants/' + user ).update({
           api_token: null,
         });
-      } else {
-        firebase.database().ref( 'researchers/' + user ).set({
-          api_token : null,
+      }
+    });
+
+    keyArr = [];
+    firebase.database().ref('researchers').orderByKey().once('value', function(snapshot) {
+
+      snapshot.forEach(function(childSnapshot) {
+        keyArr.push(childSnapshot.key);
+      });
+
+    }).then(function() {
+      if (keyArr.indexOf(user) > -1) {
+        firebase.database().ref( 'researchers/' + user ).update({
+          api_token: null,
         });
       }
     });
@@ -154,10 +178,10 @@ export default class FBSettings extends Component {
                 <Header title='FitBit Settings'></Header>
                 <Container>
                 <Col style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
-                      <Form id='form_unlink_fitbit' onSubmit={this.deleteUserAuthtoken}>
+                      <Form id='form_unlink_fitbit'>
                       <FormGroup>
                          <Row style={{display: 'flex', justifyContent: 'center',}}>
-                            <Button variant='outline-primary' id='submit' type="submit">Unlink FitBit</Button>
+                            <Button variant='outline-primary' id='unlink_fitbit' onClick={this.deleteUserAuthtoken} >Unlink FitBit</Button>
                          </Row>
                       </FormGroup>
                       </Form>
