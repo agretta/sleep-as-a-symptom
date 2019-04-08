@@ -12,8 +12,9 @@ export default class FBSettings extends Component {
 
   constructor(props) {
     super(props);
-    this.setUserAuthtoken = this.setUserAuthtoken.bind(this);
+    this.setUserAuthtoken    = this.setUserAuthtoken.bind(this);
     this.deleteUserAuthtoken = this.deleteUserAuthtoken.bind(this);
+    this.deleteUserData      = this.deleteUserData.bind(this);
     this.state = {
       fb_auth : false,
       title   : 'FitBit Settings',
@@ -121,6 +122,29 @@ export default class FBSettings extends Component {
     });
   }
 
+  deleteUserData(e){
+    // grab the user's access token for the FB API
+    var user   = firebase.auth().currentUser.uid;
+    var keyArr = [];
+
+    firebase.database().ref('participants').orderByKey().once('value', function(snapshot) {
+
+      snapshot.forEach(function(childSnapshot) {
+        keyArr.push(childSnapshot.key);
+      });
+
+    }).then(function() {
+      if (keyArr.indexOf(user) > -1) {
+        firebase.database().ref( 'participants/' + user ).update({
+          sleep_data : null,
+        }).then( function() {
+          alert( "Data deleted." );
+        });
+      }
+    });
+
+  }
+
   //TODO: implement data deletion once we implement data import
      render () {
      // https://react-bootstrap.github.io/components/forms/
@@ -139,10 +163,10 @@ export default class FBSettings extends Component {
                       </Form>
                 </Col>
                 <Col style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
-                      <Form id='form_delete_data' onSubmit={this}>
+                      <Form id='form_delete_data'>
                       <FormGroup>
                          <Row style={{display: 'flex', justifyContent: 'center',}}>
-                            <Button variant='outline-primary' id='submit' type="submit">Delete Data</Button>
+                            <Button variant='outline-primary' id='delete_data' onClick={this.deleteUserData}>Delete Data</Button>
                          </Row>
                          <Row style={{display: 'flex', justifyContent: 'center',}}>
                          <NavButton to='/dashboard'>Cancel</NavButton>
