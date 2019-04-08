@@ -2,8 +2,10 @@ import React, { Component } from 'react';
 import {Link} from 'react-router-dom';
 import NavButton from '../components/NavButton'
 import Header from '../components/Header'
+import { Container, Row, Col, Button, FormControl, FormGroup, Form } from 'react-bootstrap'
 
 var firebase = require("firebase");
+var axios    = require("axios");
 
 export default class SleepViewer extends Component { 
   state = {
@@ -11,8 +13,10 @@ export default class SleepViewer extends Component {
 
   constructor(props) {
     super(props);
+    this.accessData = this.accessData.bind(this);
     this.state = {
       fb_auth : false,
+      token   : null,
       title   : 'FitBit Settings',
     };
   }
@@ -28,10 +32,12 @@ export default class SleepViewer extends Component {
         // check if a participant profile exists
         participant_ref.once("value").then((snapshot) => {
           var token_exists = snapshot.child("api_token").exists();
+          var token        = snapshot.child("api_token").val();
 
           // we only need a state update if a profile exists
           if( token_exists ) {
             this.setState({
+              token   : token,
               fb_auth : token_exists,
             });
           }
@@ -41,10 +47,12 @@ export default class SleepViewer extends Component {
         // check if a researcher profile exists
         researcher_ref.once("value").then((snapshot) => {
           var token_exists = snapshot.child("api_token").exists();
+          var token = snapshot.child("api_token").val();
 
           // we only need a state update if a profile exists
           if( token_exists ) {
             this.setState({
+              token   : token,
               fb_auth : token_exists,
             });
           }
@@ -57,14 +65,69 @@ export default class SleepViewer extends Component {
     });
   }
 
+  // grabs user's sleep data from the fitbit API and updates our firebase servers
+  accessData() {
+
+    // grab current date and convert to yyyy-MM-dd format for fitbit API
+    var current_date = new Date().toISOString().slice( 0, 10 );
+    var auth_string  = "Bearer " + this.state.token;
+    var api_url      = 'https://api.fitbit.com/1.2/user/-/sleep/list.json';
+ 
+    // send get request to fitbit API to grab user's sleep data
+    axios.request({
+      method  : 'get',
+      baseURL : api_url,
+      headers : {'Authorization': auth_string },
+      params  : {
+        sort       : 'asc',
+        limit      : 100,
+        offset     : 0,
+        beforeDate : current_date,
+      },
+    }
+    )
+      .then(function (response) {
+        // TODO: display the data
+
+        var user = firebase.auth().currentUser.uid;
+        var keyArr = [];
+
+        // set the sleep_data in the DB (we only want participants' data)
+        firebase.database().ref('participants').orderByKey().once('value', function(snapshot) {
+
+          snapshot.forEach(function(childSnapshot) {
+            keyArr.push(childSnapshot.key);
+          });
+
+        }).then(function() {
+            if (keyArr.indexOf(user) > -1) {
+              firebase.database().ref( 'participants/' + user ).update({
+                sleep_data: response.data,
+              });
+            }
+        });
+
+      })
+      .catch(function (error) {
+        // handle error
+        console.log(error);
+      });
+
+  }
+
   render () {                                   
     if (this.state.fb_auth) {
       return (
         <div>
           <Header title='Sleep Viewer: Logged In'></Header>
-             <br></br>
-	       <NavButton to='/dashboard'>Dashboard</NavButton>
-             </div>
+          <br></br>
+          <Col style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+            <Row style={{display: 'flex', justifyContent: 'center',}}>
+              <Button variant='outline-primary' id='test_data' onClick={this.accessData}>Update sleep data!</Button>
+            </Row>
+          </Col>
+        <NavButton to='/dashboard'>Dashboard</NavButton>
+       </div>
       )
     } else {
       return (
