@@ -19,6 +19,7 @@ export default class AdminPortal extends Component {
     this.handleChange = this.handleChange.bind(this);
     this.handleChangeEmail = this.handleChangeEmail.bind(this);
     this.addResearcher = this.addResearcher.bind(this);
+    this.downloadSleepData = this.downloadSleepData.bind(this);
 
     var options = []
     var res = firebase.database().ref("researchers/");
@@ -91,6 +92,31 @@ export default class AdminPortal extends Component {
     console.log(this.state.email)
   }
 
+  downloadSleepData() {
+    var sleep_arr  = [];
+    var sleep_data = firebase.database().ref("participants/").once("value", function( snapshot ) {
+      snapshot.forEach(function(childSnapshot) {
+        var datum = childSnapshot.val().sleep_data;
+
+        if( datum != null ) {
+          sleep_arr.push(datum);
+        }
+      });
+    }).then((snapshot) => {
+      var jsonse = JSON.stringify(sleep_arr);
+      var blob   = new Blob([jsonse], {type: "application/json"});
+      var url    = URL.createObjectURL(blob);
+
+      var a         = document.createElement('a');
+      a.href        = url;
+      a.download    = "sleep_data.json";
+      a.textContent = "Download sleep_data.json";
+
+      document.getElementById('json').appendChild(a);
+    });
+
+  }
+
   render ()  {
       return (
         <div>
@@ -113,6 +139,12 @@ export default class AdminPortal extends Component {
 
                   <Row style={{display: 'flex', justifyContent: 'left',}}>
                     <Button variant='outline-primary' onClick={this.addResearcher}>Add Researcher</Button>
+                  </Row>
+                  <Row style={{display: 'flex', justifyContent: 'left',}}>
+                    <Button variant='outline-primary' id='download_data' onClick={this.downloadSleepData}>Generate JSON File</Button>
+                    <Button variant='outline-light' id='json'></Button>
+                  </Row>
+                  <Row style={{display: 'flex', justifyContent: 'left',}}>
                   </Row>
                   <Row style={{display: 'flex', justifyContent: 'left',}}>
                   <NavButton to='/dashboard'>Dashboard</NavButton>
