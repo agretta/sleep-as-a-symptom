@@ -70,6 +70,7 @@ export default class FBSettings extends Component {
 
     // set the token in the DB
     var keyArr = [];
+
     firebase.database().ref('participants').orderByKey().once('value', function(snapshot) {
 
       snapshot.forEach(function(childSnapshot) {
@@ -84,17 +85,17 @@ export default class FBSettings extends Component {
         }
       });
 
-    //clear for researcher check
-    keyArr = [];
+    // need a separate array for researcher check or else you create both authtokens bc of timing
+    var keyArr2 = [];
 
     firebase.database().ref('researchers').orderByKey().once('value', function(snapshot) {
 
       snapshot.forEach(function(childSnapshot) {
-        keyArr.push(childSnapshot.key);
+        keyArr2.push(childSnapshot.key);
       });
 
     }).then(function() {
-        if (keyArr.indexOf(user) > -1) {
+        if (keyArr2.indexOf(user) > -1) {
           firebase.database().ref( 'researchers/' + user ).update({
             api_token: token
           });
