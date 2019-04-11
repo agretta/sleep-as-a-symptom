@@ -96,7 +96,7 @@ export default class AdminPortal extends Component {
     var sleep_arr  = [];
     var sleep_data = firebase.database().ref("participants/").once("value", function( snapshot ) {
       snapshot.forEach(function(childSnapshot) {
-        var datum = childSnapshot.val().sleep_data;
+        var datum = childSnapshot.val();
 
         if( datum != null ) {
           sleep_arr.push(datum);
