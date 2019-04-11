@@ -2,12 +2,16 @@ import React, { Component } from 'react';
 import {Link} from 'react-router-dom';
 import NavButton from '../components/NavButton'
 import Header from '../components/Header'
+import ReactChartkick, { LineChart } from 'react-chartkick'
+import Chart from 'chart.js'
 import { Container, Row, Col, Button, FormControl, FormGroup, Form } from 'react-bootstrap'
 
 var firebase = require("firebase");
 var axios    = require("axios");
 
-export default class SleepViewer extends Component { 
+ReactChartkick.addAdapter(Chart);
+
+export default class SleepViewer extends Component {
   state = {
   }
 
@@ -20,7 +24,7 @@ export default class SleepViewer extends Component {
       title   : 'FitBit Settings',
     };
   }
-  
+
   componentDidMount() {
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
@@ -72,7 +76,7 @@ export default class SleepViewer extends Component {
     var current_date = new Date().toISOString().slice( 0, 10 );
     var auth_string  = "Bearer " + this.state.token;
     var api_url      = 'https://api.fitbit.com/1.2/user/-/sleep/list.json';
- 
+
     // send get request to fitbit API to grab user's sleep data
     axios.request({
       method  : 'get',
@@ -86,9 +90,20 @@ export default class SleepViewer extends Component {
       },
     }
     )
-      .then(function (response) {
-        // TODO: display the data
-
+      .then((response)=> {
+        var trimmed_sleep_data = new Object();
+        for (var i = response.data.sleep.length - 10; i < response.data.sleep.length; i++)
+        {
+          var obj = (new Object());
+          obj[response.data.sleep[i].dateOfSleep] = response.data.sleep[i].duration / 1000 / 3600;
+          for (var date in obj) { //just one of them
+            trimmed_sleep_data[date] = obj[date];
+          }
+        }
+        this.setState({
+          'sleep_data': trimmed_sleep_data
+        });
+        console.log(this.state.sleep_data);
         var user = firebase.auth().currentUser.uid;
         var keyArr = [];
 
@@ -115,12 +130,19 @@ export default class SleepViewer extends Component {
 
   }
 
-  render () {                                   
+  render () {
     if (this.state.fb_auth) {
+      console.log(this.state.sleep_data)
       return (
         <div>
           <Header title='Sleep Viewer: Logged In'></Header>
           <br></br>
+
+          <LineChart
+            
+            data={this.state.sleep_data}
+          />
+
           <Col style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
             <Row style={{display: 'flex', justifyContent: 'center',}}>
               <Button variant='outline-primary' id='test_data' onClick={this.accessData}>Update sleep data!</Button>
