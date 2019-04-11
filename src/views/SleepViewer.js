@@ -135,29 +135,31 @@ export default class SleepViewer extends Component {
       console.log(this.state.sleep_data)
       return (
         <div>
-          <Header title='Sleep Viewer: Logged In'></Header>
+          <Header title='Sleep Viewer'></Header>
           <br></br>
 
           <LineChart
-            
+            xtitle="Date"
+            ytitle="Hours Slept"
+            curve={false}
             data={this.state.sleep_data}
           />
 
-          <Col style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
-            <Row style={{display: 'flex', justifyContent: 'center',}}>
+          <Row style={{display: 'flex', justifyContent: 'center',}}>
               <Button variant='outline-primary' id='test_data' onClick={this.accessData}>Update sleep data!</Button>
+          </Row>
+          <Row style={{display: 'flex', justifyContent: 'center',}}>
+              <NavButton to='/dashboard'>Dashboard</NavButton>
             </Row>
-          </Col>
-        <NavButton to='/dashboard'>Dashboard</NavButton>
        </div>
       )
     } else {
       return (
         <div>
-          <Header title='Sleep Viewer'></Header>
+          <Header title='Oh no!'></Header>
             <br></br>
 	    <p style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
-              Please link your FitBit to see your sleep data!
+              Please link your FitBit to see your sleep data.
             </p>
           <NavButton to='/dashboard'>Dashboard</NavButton>
         </div>
