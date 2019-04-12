@@ -48,7 +48,6 @@ export default class Register extends Component {
     res.orderByKey().on("child_added", data  => {
       this.state.valid_researchers.push(data.val().email);
       this.setState(this.state.valid_researchers);
-      console.log(this.state.valid_researchers);
     });
   }
 

@@ -94,12 +94,12 @@ export default class Register extends Component {
   }
   handleChangeJobStatus(evt) {
     this.setState({
-      job: evt.target.value
+      job: evt.target.options[evt.target.selectedIndex].value
     });
   }
   handleChangeActivity(evt) {
     this.setState({
-      activity: evt.target.value
+      activity: evt.target.options[evt.target.selectedIndex].value
     });
   }
   handleChangeAge(evt) {
@@ -109,17 +109,17 @@ export default class Register extends Component {
   }
   handleChangeEthnicity(evt) {
     this.setState({
-      ethnicity: evt.target.value
+      ethnicity: evt.target.options[evt.target.selectedIndex].value
     });
   }
   handleChangeRace(evt) {
     this.setState({
-      race: evt.target.value
+      race: evt.target.options[evt.target.selectedIndex].value
     });
   }
   handleChangeSex(evt) {
     this.setState({
-      sex: evt.target.value
+      sex: evt.target.options[evt.target.selectedIndex].value
     });
   }
   handleChangeZip(evt) {
@@ -205,11 +205,16 @@ export default class Register extends Component {
           this.state.fn != '' &&
           this.state.ln != '' &&
           this.state.job != '' &&
+          this.state.job != 'not-selected' &&
           this.state.activity != '' &&
+          this.state.activity != 'not-selected' &&
           this.state.age != '' &&
           this.state.ethnicity != '' &&
+          this.state.ethnicity != 'not-selected' &&
           this.state.race != '' &&
+          this.state.race != 'not-selected' &&
           this.state.sex != '' &&
+          this.state.sex != 'not-selected' &&
           this.state.zip != '';
   }
 
@@ -268,28 +273,49 @@ export default class Register extends Component {
                 placeholder="Confirm Password" value={this.state.cPass} onChange={this.handleChangecPass}/>
               </Row>
               <Row style={{display: 'flex', justifyContent: 'center',}}>
-                <FormControl className='input' name='job' type="text"
-                placeholder="Job Status" value={this.state.job} onChange={this.handleChangeJobStatus}/>
+                <select name='job' value={this.state.job} onChange={this.handleChangeJobStatus}>
+                  <option value="not-selected">Job Status</option>
+                  <option value="employed">Employed</option>
+                  <option value="unemployed">Unemployed</option>
+                  <option value="student">Student</option>
+               </select>
               </Row>
               <Row style={{display: 'flex', justifyContent: 'center',}}>
-                <FormControl className='input' name='activity' type="text"
-                placeholder="Average Daily Activity Level" value={this.state.activity} onChange={this.handleChangeActivity}/>
+                <select name='activity' value={this.state.activity} onChange={this.handleChangeActivity}>
+                  <option value="not-selected">Average Daily Activity Level</option>
+                  <option value="sedentary">Sendentary</option>
+                  <option value="moderate">Moderately Active</option>
+                  <option value="extremely">Extremely Active</option>
+                </select>
               </Row>
               <Row style={{display: 'flex', justifyContent: 'center',}}>
                 <FormControl className='input' name='age' type="text"
                 placeholder="Age" value={this.state.age} onChange={this.handleChangeAge}/>
               </Row>
               <Row style={{display: 'flex', justifyContent: 'center',}}>
-                <FormControl className='input' name='ethnicity' type="text"
-                placeholder="Ethnicity" value={this.state.ethnicity} onChange={this.handleChangeEthnicity}/>
+                <select name='ethnicity' value={this.state.ethnicity} onChange={this.handleChangeEthnicity}>
+                  <option value="not-selected">Ethnicity</option>
+                  <option value="hispanic/latino">Hispanic / Latino</option>
+                  <option value="non-hispanic/latino">Non Hispanic / Latino</option>
+                </select>
               </Row>
               <Row style={{display: 'flex', justifyContent: 'center',}}>
-                <FormControl className='input' name='race' type="text"
-                placeholder="Race" value={this.state.race} onChange={this.handleChangeRace}/>
+                <select name='race' value={this.state.race} onChange={this.handleChangeRace}>
+                  <option value="not-selected">Race</option>
+                  <option value="native">Native American or Alaska Native</option>
+                  <option value="asian">Asian</option>
+                  <option value="black">Black</option>
+                  <option value="white">White</option>
+                  <option value="native-pacific">Native Hawaiian or Other Pacific Islander</option>
+                  <option value="mixture">More Than One</option>
+                </select>
               </Row>
               <Row style={{display: 'flex', justifyContent: 'center',}}>
-                <FormControl className='input' name='sex' type="text"
-                placeholder="Sex" value={this.state.sex} onChange={this.handleChangeSex}/>
+                <select name='sex' value={this.state.sex} onChange={this.handleChangeSex}>
+                  <option value="not-selected">Sex</option>
+                  <option value="male">Male</option>
+                  <option value="female">Female</option>
+                </select>
               </Row>
               <Row style={{display: 'flex', justifyContent: 'center',}}>
                 <FormControl className='input' name='zip' type="text"
