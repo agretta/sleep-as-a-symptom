@@ -22,19 +22,28 @@ export default class AdminPortal extends Component {
     this.downloadSleepData = this.downloadSleepData.bind(this);
 
     var options = []
-    var res = firebase.database().ref("researchers/");
-    res.on("child_added", data => {
-      console.log("First Name: " + data.val().first_name);
-      console.log("Last Name: " + data.val().last_name);
-      console.log("Location: " + data.val().institution);
-      console.log("Location: " + data.val().email);
-      console.log("ID " + data.key);
-      // this.state.options.push({value:data.key , label: data.val().first_name + ' ' + data.val().last_name + ' From ' + data.val().institution})
-      options.push({value:data.key , label: data.val().first_name + ' ' + data.val().last_name + ' From ' + data.val().institution})
-      // this.setState(this.state.options);
-      console.log(`options:`, options);
-      // this.setState({update:true});
-      // this.setState({update:!this.state.update});
+    // var res = firebase.database().ref("researchers/");
+    // res.on("child_added", data => {
+    //   console.log("First Name: " + data.val().first_name);
+    //   console.log("Last Name: " + data.val().last_name);
+    //   console.log("Location: " + data.val().institution);
+    //   console.log("Location: " + data.val().email);
+    //   console.log("ID " + data.key);
+    //   // this.state.options.push({value:data.key , label: data.val().first_name + ' ' + data.val().last_name + ' From ' + data.val().institution})
+    //   // options.push({value:data.key , label: data.val().first_name + ' ' + data.val().last_name + ' From ' + data.val().institution})
+    //   // this.setState(this.state.options);
+    //   console.log(`options:`, options);
+    //   // this.setState({update:true});
+    //   // this.setState({update:!this.state.update});
+    //   this.setState({update: Math.random()})
+    // });
+
+
+    var res = firebase.database().ref("valid_researchers/");
+    res.on("child_added", data  => {
+      this.setState(this.state.valid_researchers);
+      console.log(this.state.valid_researchers);
+      options.push({value:data.key, label: data.val().email})
       this.setState({update: Math.random()})
     });
 
@@ -48,15 +57,24 @@ export default class AdminPortal extends Component {
       selectedOptionEmail: null,
       options:options,
       update:0,
-      email:null
+      email:null,
+      valid_researchers: []
     };
 
+    var res = firebase.database().ref("valid_researchers/");
+    res.on("child_added", data  => {
+      this.state.valid_researchers.push(data.val().email);
+      this.setState(this.state.valid_researchers);
+      console.log(this.state.valid_researchers);
+      this.setState({update: Math.random()})
+    });
     this.setState({options:options});
   }
 
   handleChange = (selectedOption) => {
       this.setState({ selectedOption: selectedOption });
       this.setState({ selectedOptionName: selectedOption.label });
+      this.setState({ selectedOptionEmail: selectedOption.label});
       this.setState({ selectedOptionID: selectedOption.value});
       console.log(`Option selected:`, selectedOption.label);
       console.log(`options:`, this.state.options);
@@ -64,14 +82,24 @@ export default class AdminPortal extends Component {
     }
 
   handleClose() {
-    console.log("removing");
-    var res = firebase.database().ref("valid_researchers/");
-    res.orderByChild("email").once("child_added", data => {
-      console.log(data.key + ' '+ data.val().email);
-      if (data.email == this.state.selectedOptionEmail) {
-        firebase.database().ref("valid_researchers/" + data.key).remove();
+
+    var user  = firebase.auth().currentUser;
+    if (!this.state.valid_researchers.includes(user.email)) {
+      console.log(this.state.valid_researchers);
+      alert("You are not a valid researcher")
+      this.handleCloseExit();
+    }
+
+    firebase.database().ref("valid_researchers/" + this.state.selectedOptionID).remove();
+    console.log('removing ' + this.state.selectedOptionEmail+ ' ' + this.state.selectedOptionID );
+    for( var i =0;i<this.state.options.length;i++){
+      console.log(`val:`, this.state.options[i].value);
+      if (this.state.selectedOptionID == this.state.options[i].value) {
+        this.state.options.splice(i,1);
       }
-    });
+    }
+    console.log(`options:`, this.state.options);
+    this.setState({update: Math.random()})
     this.handleCloseExit();
   }
 
@@ -88,11 +116,25 @@ export default class AdminPortal extends Component {
   }
 
   addResearcher() {
+    var user  = firebase.auth().currentUser;
+    if (!this.state.valid_researchers.includes(user.email)) {
+      console.log(this.state.valid_researchers);
+      alert("You are not a valid researcher")
+      return false;
+    }
     firebase.database().ref('valid_researchers/').push({email: this.state.email});
     console.log(this.state.email)
   }
 
   downloadSleepData() {
+
+    var user  = firebase.auth().currentUser;
+    if (!this.state.valid_researchers.includes(user.email)) {
+      console.log(this.state.valid_researchers);
+      alert("You are not a valid researcher")
+      return false;
+    }
+
     var sleep_arr  = [];
     var sleep_data = firebase.database().ref("participants/").once("value", function( snapshot ) {
       snapshot.forEach(function(childSnapshot) {
@@ -114,6 +156,7 @@ export default class AdminPortal extends Component {
 
       document.getElementById('json').appendChild(a);
     });
+
 
   }
 
