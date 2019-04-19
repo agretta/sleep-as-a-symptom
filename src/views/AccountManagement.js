@@ -19,6 +19,7 @@ export default class AccountManagement extends Component {
     this.handleChangeCurrentPasswordPass = this.handleChangeCurrentPasswordPass.bind(this);
     this.updateEmail = this.updateEmail.bind(this);
     this.updatePassword = this.updatePassword.bind(this);
+    this.deleteAccount = this.deleteAccount.bind(this);
     this.state = {
       email:'',
       pass:'',
@@ -203,13 +204,80 @@ export default class AccountManagement extends Component {
     e.preventDefault();
   }
 
+  deleteAccount() {
+    var confirm_delete = window.confirm( "Are you sure you want to delete your account?" );
+
+    if( confirm_delete ) {
+
+      var user = firebase.auth().currentUser.uid;
+      var user_to_delete = firebase.auth().currentUser;
+
+      // set the token in the DB
+      var keyArr = [];
+      firebase.database().ref('participants').orderByKey().once('value', function(snapshot) {
+
+        snapshot.forEach(function(childSnapshot) {
+          keyArr.push(childSnapshot.key);
+        });
+
+      }).then(function() {
+          if (keyArr.indexOf(user) > -1) {
+            firebase.database().ref( 'participants/' + user ).remove();
+          }
+
+          user_to_delete.delete().then(function() {
+            alert( "Account Deleted." );
+            window.location.href = '/';
+          }).catch(function(error) {
+            if( error.code === "auth/requires-recent-login" ) {
+              alert( "Must have logged in recently to delete account. Please sign out, log in, and try again. " );
+            } else {
+              console.log( error );
+              alert( "There was an error deleting the account." );
+            }
+          });
+        });
+
+      //clear for researcher check
+      keyArr = [];
+
+      firebase.database().ref('researchers').orderByKey().once('value', function(snapshot) {
+
+        snapshot.forEach(function(childSnapshot) {
+          keyArr.push(childSnapshot.key);
+        });
+
+      }).then(function() {
+          if (keyArr.indexOf(user) > -1) {
+            firebase.database().ref( 'researchers/' + user ).remove();
+          }
+
+          user_to_delete.delete().then(function() {
+            alert( "Account Deleted." );
+            window.location.href = '/';
+          }).catch(function(error) {
+            if( error.code === "auth/requires-recent-login" ) {
+              alert( "Must have logged in recently to delete account. Please sign out, log in, and try again. " );
+            } else {
+              console.log( error );
+              alert( "There was an error deleting the account." );
+            }
+          });
+      });
+
+
+
+    } else {
+      alert("Account not deleted. If you want to unlink your fitbit or delete just your sleep data, please visit the Fitbit Settings page.");
+    }
+  }
+
   render () {
       return (
         <div>
          <Header title='User Settings'></Header>
               <Col style={{display: 'flex', justifyContent: 'left', alignItems: 'center', margin: '5%'}}>
-                    <Form id='form'>
-                    <FormGroup>
+                    <div id='form'>
                         Update email:
                       <Row style={{display: 'flex', justifyContent: 'center', margin:'2%', width:'200px'}}>
                         <FormControl className='input' name='email' type="text" id="email"
@@ -238,12 +306,14 @@ export default class AccountManagement extends Component {
                       <Row style={{display: 'flex', justifyContent: 'left',margin:'2%'}}>
                         <Button variant='outline-primary' id='update-pass' type="submit" onClick={this.updatePassword}>Update Password</Button>
                       </Row>
+                      <Row style={{display: 'flex', justifyContent: 'left',margin:'2%'}}>
+                        <Button variant='outline-danger' id='update-pass' type="submit" onClick={this.deleteAccount}>Delete Account</Button>
+                      </Row>
                       <Row style={{height:'50px'}}></Row>
                       <Row style={{display: 'flex', justifyContent: 'left', margin:'2%'}}>
                       <NavButton to='/dashboard'>Dashboard</NavButton>
                       </Row>
-                    </FormGroup>
-                    </Form>
+                    </div>
               </Col>
         </div>
       )

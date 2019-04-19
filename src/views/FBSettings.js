@@ -12,8 +12,9 @@ export default class FBSettings extends Component {
 
   constructor(props) {
     super(props);
-    this.setUserAuthtoken = this.setUserAuthtoken.bind(this);
+    this.setUserAuthtoken    = this.setUserAuthtoken.bind(this);
     this.deleteUserAuthtoken = this.deleteUserAuthtoken.bind(this);
+    this.deleteUserData      = this.deleteUserData.bind(this);
     this.state = {
       fb_auth : false,
       title   : 'FitBit Settings',
@@ -23,16 +24,36 @@ export default class FBSettings extends Component {
   componentDidMount() {
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
-        var uid = firebase.auth().currentUser.uid;
-        var ref = firebase.database().ref( "users/" + uid );
+        // grab the unique user id and check if it matches a researcher or participant
+        var uid             = firebase.auth().currentUser.uid;
+        var participant_ref = firebase.database().ref( "participants/" + uid );
+        var researcher_ref  = firebase.database().ref( "researchers/" + uid );
 
-        ref.once("value").then((snapshot) => {
-            var token_exists = snapshot.child("api_token").exists();
+        // check if a participant profile exists
+        participant_ref.once("value").then((snapshot) => {
+          var token_exists = snapshot.child("api_token").exists();
 
+          // we only need a state update if a profile exists
+          if( token_exists ) {
             this.setState({
               fb_auth : token_exists,
             });
-          });
+          }
+
+        });
+
+        // check if a researcher profile exists
+        researcher_ref.once("value").then((snapshot) => {
+          var token_exists = snapshot.child("api_token").exists();
+
+          // we only need a state update if a profile exists
+          if( token_exists ) {
+            this.setState({
+              fb_auth : token_exists,
+            });
+          }
+
+        });
       } else {
         // No user is signed in,
         // so we don't do anything
@@ -49,6 +70,7 @@ export default class FBSettings extends Component {
 
     // set the token in the DB
     var keyArr = [];
+
     firebase.database().ref('participants').orderByKey().once('value', function(snapshot) {
 
       snapshot.forEach(function(childSnapshot) {
@@ -60,12 +82,25 @@ export default class FBSettings extends Component {
           firebase.database().ref( 'participants/' + user ).update({
             api_token: token
           });
-        } else {
+        }
+      });
+
+    // need a separate array for researcher check or else you create both authtokens bc of timing
+    var keyArr2 = [];
+
+    firebase.database().ref('researchers').orderByKey().once('value', function(snapshot) {
+
+      snapshot.forEach(function(childSnapshot) {
+        keyArr2.push(childSnapshot.key);
+      });
+
+    }).then(function() {
+        if (keyArr2.indexOf(user) > -1) {
           firebase.database().ref( 'researchers/' + user ).update({
             api_token: token
           });
         }
-      });
+    });
 
     this.setState({
         fb_auth : true,
@@ -77,13 +112,62 @@ export default class FBSettings extends Component {
     // grab the user's access token for the FB API
     var user = firebase.auth().currentUser.uid;
 
-    firebase.database().ref( 'users/' + user ).set({
-        api_token : null,
+    var keyArr = [];
+    firebase.database().ref('participants').orderByKey().once('value', function(snapshot) {
+
+      snapshot.forEach(function(childSnapshot) {
+        keyArr.push(childSnapshot.key);
+      });
+
+    }).then(function() {
+      if (keyArr.indexOf(user) > -1) {
+        firebase.database().ref( 'participants/' + user ).update({
+          api_token: null,
+        });
+      }
+    });
+
+    keyArr = [];
+    firebase.database().ref('researchers').orderByKey().once('value', function(snapshot) {
+
+      snapshot.forEach(function(childSnapshot) {
+        keyArr.push(childSnapshot.key);
+      });
+
+    }).then(function() {
+      if (keyArr.indexOf(user) > -1) {
+        firebase.database().ref( 'researchers/' + user ).update({
+          api_token: null,
+        });
+      }
     });
 
     this.setState({
         fb_auth : false,
     });
+  }
+
+  deleteUserData(e){
+    // grab the user's access token for the FB API
+    var user   = firebase.auth().currentUser.uid;
+    var keyArr = [];
+
+    firebase.database().ref('participants').orderByKey().once('value', function(snapshot) {
+
+      snapshot.forEach(function(childSnapshot) {
+        keyArr.push(childSnapshot.key);
+      });
+
+    }).then(function() {
+      if (keyArr.indexOf(user) > -1) {
+        firebase.database().ref( 'participants/' + user ).update({
+          sleep_data : null,
+        }).then( function() {
+          alert( "Data deleted." );
+        });
+      }
+    });
+
   }
 
   //TODO: implement data deletion once we implement data import
@@ -95,19 +179,19 @@ export default class FBSettings extends Component {
                 <Header title='FitBit Settings'></Header>
                 <Container>
                 <Col style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
-                      <Form id='form_unlink_fitbit' onSubmit={this.deleteUserAuthtoken}>
+                      <Form id='form_unlink_fitbit'>
                       <FormGroup>
                          <Row style={{display: 'flex', justifyContent: 'center',}}>
-                            <Button variant='outline-primary' id='submit' type="submit">Unlink FitBit</Button>
+                            <Button variant='outline-primary' id='unlink_fitbit' onClick={this.deleteUserAuthtoken} >Unlink FitBit</Button>
                          </Row>
                       </FormGroup>
                       </Form>
                 </Col>
                 <Col style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
-                      <Form id='form_delete_data' onSubmit={this}>
+                      <Form id='form_delete_data'>
                       <FormGroup>
                          <Row style={{display: 'flex', justifyContent: 'center',}}>
-                            <Button variant='outline-primary' id='submit' type="submit">Delete Data</Button>
+                            <Button variant='outline-primary' id='delete_data' onClick={this.deleteUserData}>Delete Data</Button>
                          </Row>
                          <Row style={{display: 'flex', justifyContent: 'center',}}>
                          <NavButton to='/dashboard'>Cancel</NavButton>
