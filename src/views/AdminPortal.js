@@ -38,17 +38,7 @@ export default class AdminPortal extends Component {
     //   this.setState({update: Math.random()})
     // });
 
-
-    var res = firebase.database().ref("valid_researchers/");
-    res.on("child_added", data  => {
-      this.setState(this.state.valid_researchers);
-      console.log(this.state.valid_researchers);
-      options.push({value:data.key, label: data.val().email})
-      this.setState({update: Math.random()})
-    });
-
-
-    this.state = {
+   this.state = {
       title: "Administrator Portal",
       selectedOption: null,
       show: false,
@@ -60,6 +50,16 @@ export default class AdminPortal extends Component {
       email:null,
       valid_researchers: []
     };
+    var res = firebase.database().ref("valid_researchers/");
+    res.on("child_added", data  => {
+    //  this.setState(this.state.valid_researchers);
+   // console.log(this.state.valid_researchers);
+      options.push({value:data.key, label: data.val().email})
+      this.setState({update: Math.random()})
+    });
+
+
+ 
 
     var res = firebase.database().ref("valid_researchers/");
     res.on("child_added", data  => {
