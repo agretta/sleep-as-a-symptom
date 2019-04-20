@@ -6,7 +6,7 @@
 Typically, when researchers want information about the way we sleep, they conduct a laboratory sleep study, involving expensive equipment and a huge hassle for participants. The app Sleep as a Symptom helps two researchers from the University of Alabama at Huntsville to gather that sleep data from people’s FitBits which they’re already using regularly. With the FitBit sleep data, the researchers can conduct their study with far more information at a far lower cost than with a traditional method.
 
 ## Release Notes
-Release Notes must address the following information:
+
 ### New Software Features
 The entire web application is new this release
 **An overview of features:**
@@ -23,7 +23,6 @@ The entire web application is new this release
 * manual interaction to log sleep data is required
 
 # Install Guide
-The Install Guide must address the following questions as applicable to the team’s product/system:
 
 ## Pre-requisites:
 
@@ -33,7 +32,7 @@ The Install Guide must address the following questions as applicable to the team
 * Node version 8.16.0 or later
 * A modern Web browser
 
-### Download instructions: how will the customer and users get access to the project?
+### Download instructions:
 Clone the project from Github to a local directory
 
 ```
